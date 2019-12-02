@@ -28,6 +28,7 @@ toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_f
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\stm32f4xx_hal_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h

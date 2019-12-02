@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-
+#include "bsp_io.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -137,7 +137,20 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+		if (LeftGN)
+		{
+		}		
+		else	
+		{
+			HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
+			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_8);	
+			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_7);	
+			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_6);	
+			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_5);			
+		}			
+		//	flow_led();
+    osDelay(100);			
+		
   }
   /* USER CODE END StartDefaultTask */
 }

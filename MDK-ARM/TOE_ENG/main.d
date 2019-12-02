@@ -29,6 +29,7 @@ toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
@@ -48,6 +49,7 @@ toe_eng\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 toe_eng\main.o: ../Inc/can.h
 toe_eng\main.o: ../Inc/dma.h
+toe_eng\main.o: ../Inc/spi.h
 toe_eng\main.o: ../Inc/tim.h
 toe_eng\main.o: ../Inc/usart.h
 toe_eng\main.o: ../Inc/gpio.h
