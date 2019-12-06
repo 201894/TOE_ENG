@@ -54,16 +54,12 @@ void pid_adjust(
 		float ki,
 		float kd);
 		
-extern  PID_Typedef pid_yaw_out;
-extern  PID_Typedef pid_yaw_in;
-extern  PID_Typedef pid_chassis[6];
-extern	PID_Typedef pid_link;//use total_angle and constant to make pid
+		
+extern  PID_Typedef pid_out[6];
+extern  PID_Typedef pid_in[3];
+extern  PID_Typedef pid_chassis[6]; 				
 extern	PID_Typedef pid_link_out;// total_angle of 6020 supposed to be out_pid; Gyro.gz to handle the in_pid
 extern	PID_Typedef pid_link_in;			
-extern   PID_Typedef pid_pit_out;//6o2o
-extern   PID_Typedef pid_pit_in;
-extern	PID_Typedef pid_stir_out;//M2006 x 2
-extern	PID_Typedef pid_stir_in;
 extern	PID_Typedef pid_fric[2];
 
 #endif

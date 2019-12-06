@@ -11,18 +11,9 @@
 #include <string.h>
 #include <stdio.h>
 
-PID_Typedef pid_yaw_out       ={0};//6020
-PID_Typedef pid_yaw_in         ={0};
-PID_Typedef pid_pit_out       ={0};//6020
-PID_Typedef pid_pit_in         ={0};
-
-PID_Typedef pid_stir_out       ={0};//M2006 
-PID_Typedef pid_stir_in         ={0};
-
-PID_Typedef pid_chassis[6]      ={0};//3508 x 4
-PID_Typedef pid_link               ={0};
-PID_Typedef pid_link_out        ={0};
-PID_Typedef pid_link_in          ={0};
+PID_Typedef pid_out[6]       ={0};//6020
+PID_Typedef pid_in[3]       ={0};//6020
+PID_Typedef pid_chassis[6]      ={0};//3508 x 6
 
 PID_Typedef pid_fric[2]              ={0};
 /**

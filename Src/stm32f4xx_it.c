@@ -25,6 +25,9 @@
 #include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "bsp_uart.h"
+#include "STMGood.h"
+#include "DR16_decode.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,10 +63,12 @@
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
+extern DMA_HandleTypeDef hdma_uart7_rx;
 extern DMA_HandleTypeDef hdma_usart1_rx;
-extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart6_rx;
+extern UART_HandleTypeDef huart7;
 extern UART_HandleTypeDef huart1;
-extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart6;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -187,17 +192,17 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 stream5 global interrupt.
+  * @brief This function handles DMA1 stream3 global interrupt.
   */
-void DMA1_Stream5_IRQHandler(void)
+void DMA1_Stream3_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
+  /* USER CODE BEGIN DMA1_Stream3_IRQn 0 */
 
-  /* USER CODE END DMA1_Stream5_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_usart2_rx);
-  /* USER CODE BEGIN DMA1_Stream5_IRQn 1 */
-
-  /* USER CODE END DMA1_Stream5_IRQn 1 */
+  /* USER CODE END DMA1_Stream3_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_uart7_rx);
+  /* USER CODE BEGIN DMA1_Stream3_IRQn 1 */
+  
+  /* USER CODE END DMA1_Stream3_IRQn 1 */
 }
 
 /**
@@ -234,26 +239,28 @@ void CAN1_RX0_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
+  #ifdef  USE_SYS_IRQ
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-
+  #endif
+	UART_RX_IDLE_IRQ(&Dbus_usart);
   /* USER CODE END USART1_IRQn 1 */
 }
 
 /**
-  * @brief This function handles USART2 global interrupt.
+  * @brief This function handles DMA2 stream1 global interrupt.
   */
-void USART2_IRQHandler(void)
+void DMA2_Stream1_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART2_IRQn 0 */
+  /* USER CODE BEGIN DMA2_Stream1_IRQn 0 */
 
-  /* USER CODE END USART2_IRQn 0 */
-  HAL_UART_IRQHandler(&huart2);
-  /* USER CODE BEGIN USART2_IRQn 1 */
-
-  /* USER CODE END USART2_IRQn 1 */
+  /* USER CODE END DMA2_Stream1_IRQn 0 */
+  HAL_DMA_IRQHandler(&hdma_usart6_rx);
+  /* USER CODE BEGIN DMA2_Stream1_IRQn 1 */
+  Dealdata(uart6_buff[0]);
+  __HAL_UART_CLEAR_IDLEFLAG(&BT_usart);  
+  /* USER CODE END DMA2_Stream1_IRQn 1 */
 }
 
 /**
@@ -266,7 +273,7 @@ void DMA2_Stream2_IRQHandler(void)
   /* USER CODE END DMA2_Stream2_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_usart1_rx);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
-
+  rc_callback_handle(&rc,dbus_buf);
   /* USER CODE END DMA2_Stream2_IRQn 1 */
 }
 
@@ -296,6 +303,36 @@ void CAN2_RX0_IRQHandler(void)
   /* USER CODE BEGIN CAN2_RX0_IRQn 1 */
 
   /* USER CODE END CAN2_RX0_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART6 global interrupt.
+  */
+void USART6_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART6_IRQn 0 */
+  #ifdef  USE_SYS_IRQ
+  /* USER CODE END USART6_IRQn 0 */
+  HAL_UART_IRQHandler(&huart6);
+  /* USER CODE BEGIN USART6_IRQn 1 */
+  #endif
+	UART_RX_IDLE_IRQ(&BT_usart);	
+  /* USER CODE END USART6_IRQn 1 */
+}
+
+/**
+  * @brief This function handles UART7 global interrupt.
+  */
+void UART7_IRQHandler(void)
+{
+  /* USER CODE BEGIN UART7_IRQn 0 */
+  #ifdef  USE_SYS_IRQ
+  /* USER CODE END UART7_IRQn 0 */
+  HAL_UART_IRQHandler(&huart7);
+  /* USER CODE BEGIN UART7_IRQn 1 */
+  #endif
+	UART_RX_IDLE_IRQ(&huart7);	
+  /* USER CODE END UART7_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

@@ -17,10 +17,10 @@
 /* usart relevant */
 #define Dbus_usart              huart1 //for dji remote controler reciever
 
-#define BT_usart                 huart2 //for debug 
-#define DBUS_USART         USART1 //for dji remote controler reciever
+#define BT_usart                 huart6 //for debug 
+#define DBUS_USART               USART1 //for dji remote controler reciever
 
-#define BT_USART              USART2//for debug
+#define BT_USART              USART6//for debug
 void uart1_device_init(void);
 void uart7_device_init(void);
 void uart6_device_init(void);

@@ -43,3 +43,11 @@ toe_eng\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS
 toe_eng\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 toe_eng\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 toe_eng\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+toe_eng\stm32f4xx_it.o: ..\UserBsp\bsp_uart.h
+toe_eng\stm32f4xx_it.o: ../Inc/usart.h
+toe_eng\stm32f4xx_it.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\stm32f4xx_it.o: ..\RmLib\STMGood.h
+toe_eng\stm32f4xx_it.o: ..\DeCode\DR16_decode.h
+toe_eng\stm32f4xx_it.o: ..\RmLib\RMsystem.h
+toe_eng\stm32f4xx_it.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
+toe_eng\stm32f4xx_it.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h

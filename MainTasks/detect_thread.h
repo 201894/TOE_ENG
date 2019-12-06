@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef __DETECT_TASK_H__
-#define __DETECT_TASK_H__
+#ifndef __DETECT_THREAD_H__
+#define __DETECT_THREAD_H__
 
 #include "stm32f4xx_hal.h"
 #include "RMsystem.h"

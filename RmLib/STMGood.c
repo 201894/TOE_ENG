@@ -19,7 +19,6 @@ char Data[100];
 char Str1[100];
 double xx[100];
 //-----------------------------------变量保护区（以上变量不能改变）
-extern int16_t  chassis_target[4];
 float _kp,_ki,_kd; 
 float _kkp,_kki,_kkd;
 float target,maxout1,maxout2;

@@ -8,7 +8,7 @@
  *
  */
 
-#include "detect_task.h"
+#include "detect_thread.h"
 #include "cmsis_os.h"
 #include "bsp_io.h"
 #include "freertos.h"
@@ -137,7 +137,7 @@ void detector_param_init(void)
   */
 uint32_t detect_time_last;
 int detect_time_ms;
-void detect_task(void const *argu)
+void detect_thread(void const *argu)
 {
   LED_R_OFF;
   LED_G_OFF;
@@ -146,7 +146,7 @@ void detect_task(void const *argu)
   {
     detect_time_ms = HAL_GetTick() - detect_time_last;
     detect_time_last = HAL_GetTick();
-    
+
     /* module offline detect */
     module_offline_detect();
     if (g_err.err_now != NULL)

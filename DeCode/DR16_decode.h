@@ -14,6 +14,8 @@
 #include "RMsystem.h"
 #include "string.h"
 
+#define Dbus_Max_Len     50
+#define DBbus_BUFLEN     18
 enum
 {
   RC_UP = 1,
@@ -70,9 +72,7 @@ typedef __packed struct
   } kb;
 } rc_info_t;
 void rc_init(void);
-#define Dbus_Max_Len       50
-#define DBbus_BUFLEN     18
-void      rc_callback_handle(rc_info_t *rc, uint8_t *buff);
-extern  rc_info_t   rc,src;
-extern   uint8_t  dbus_buf[DBbus_BUFLEN];
+void  rc_callback_handle(rc_info_t *rc, uint8_t *buff);
+extern rc_info_t   rc,lrc;
+extern  uint8_t  dbus_buf[DBbus_BUFLEN];
 #endif

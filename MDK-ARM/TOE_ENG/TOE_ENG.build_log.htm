@@ -22,15 +22,28 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 E:\RM2020\RM_ENGINEER\TOE_ENG\MDK-ARM\TOE_ENG.uvprojx
-Project File Date:  12/01/2019
+Project File Date:  12/05/2019
 
 <h2>Output:</h2>
 Build target 'TOE_ENG'
-compiling bsp_can.c...
+compiling chassis_thread.c...
+..\MainTasks\chassis_thread.h(63): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\MainTasks\chassis_thread.c(87): warning:  #177-D: variable "atan_angle" was declared but never referenced
+        static float atan_angle = 0.0f;
+..\MainTasks\chassis_thread.c(89): warning:  #177-D: variable "diff_angle" was declared but never referenced
+        static float diff_angle = 0.0f;
+..\MainTasks\chassis_thread.c(91): warning:  #177-D: variable "merge_spd" was declared but never referenced
+        static float merge_spd = 0.0f;
+..\MainTasks\chassis_thread.c(142): warning:  #550-D: parameter "Corgi_Angle" was set but never used
+  static void corgi_mode_ctrl(int16_t Corgi_Angle, \
+..\MainTasks\chassis_thread.c(143): warning:  #550-D: parameter "sRevolMax" was set but never used
+                                          int16_t sRevolMax, \
+..\MainTasks\chassis_thread.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=12220 RO-data=532 RW-data=132 ZI-data=18228  
+Program Size: Code=22412 RO-data=704 RW-data=224 ZI-data=20896  
 FromELF: creating hex file...
-"TOE_ENG\TOE_ENG.axf" - 0 Error(s), 0 Warning(s).
+"TOE_ENG\TOE_ENG.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 

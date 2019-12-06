@@ -11,9 +11,9 @@
 #include "stm32f4xx_hal.h"
 #include  "gpio.h"
 
-#define LeftGN     HAL_GPIO_ReadPin(INA_GPIO_Port, INA_Pin)
-#define MiddleGN   HAL_GPIO_ReadPin(INB_GPIO_Port, INB_Pin)
-#define RightGN    HAL_GPIO_ReadPin(INC_GPIO_Port, INC_Pin)
+
+#define LASER_ON    HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_SET)
+#define LASER_OFF   HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_RESET)
 #define LED_G_ON   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_14, GPIO_PIN_RESET)
 #define LED_G_OFF  HAL_GPIO_WritePin(GPIOF, GPIO_PIN_14, GPIO_PIN_SET)
 #define LED_R_ON   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET)

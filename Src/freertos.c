@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
 #include "bsp_io.h"
+#include "km_handle.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,14 +49,22 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-osThreadId defaultTaskHandle;
+osThreadId DEBUGTHREADHandle;
+osThreadId CHASSISTHREADHandle;
+osThreadId GIMBALTHREADHandle;
+osThreadId KERNALTHREADHandle;
+osThreadId DETECTHREADHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
    
 /* USER CODE END FunctionPrototypes */
 
-void StartDefaultTask(void const * argument);
+void debug_thread(void const * argument);
+void chassis_thread(void const * argument);
+void gimbal_thread(void const * argument);
+void kernal_thread(void const * argument);
+void detect_thread(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -114,9 +123,25 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityIdle, 0, 256);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* definition and creation of DEBUGTHREAD */
+  osThreadDef(DEBUGTHREAD, debug_thread, osPriorityIdle, 0, 256);
+  DEBUGTHREADHandle = osThreadCreate(osThread(DEBUGTHREAD), NULL);
+
+  /* definition and creation of CHASSISTHREAD */
+  osThreadDef(CHASSISTHREAD, chassis_thread, osPriorityIdle, 0, 256);
+  CHASSISTHREADHandle = osThreadCreate(osThread(CHASSISTHREAD), NULL);
+
+  /* definition and creation of GIMBALTHREAD */
+  osThreadDef(GIMBALTHREAD, gimbal_thread, osPriorityIdle, 0, 256);
+  GIMBALTHREADHandle = osThreadCreate(osThread(GIMBALTHREAD), NULL);
+
+  /* definition and creation of KERNALTHREAD */
+  osThreadDef(KERNALTHREAD, kernal_thread, osPriorityIdle, 0, 256);
+  KERNALTHREADHandle = osThreadCreate(osThread(KERNALTHREAD), NULL);
+
+  /* definition and creation of DETECTHREAD */
+  osThreadDef(DETECTHREAD, detect_thread, osPriorityIdle, 0, 128);
+  DETECTHREADHandle = osThreadCreate(osThread(DETECTHREAD), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -124,35 +149,97 @@ void MX_FREERTOS_Init(void) {
 
 }
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_debug_thread */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the DEBUGTHREAD thread.
   * @param  argument: Not used 
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+/* USER CODE END Header_debug_thread */
+void debug_thread(void const * argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN debug_thread */
   /* Infinite loop */
   for(;;)
   {
-		if (LeftGN)
-		{
-		}		
-		else	
-		{
-			HAL_GPIO_TogglePin(GPIOF,GPIO_PIN_14);
-			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_8);	
-			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_7);	
-			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_6);	
-			HAL_GPIO_TogglePin(GPIOG,GPIO_PIN_5);			
-		}			
-		//	flow_led();
-    osDelay(100);			
 		
+		flow_led();
+
+//    osDelay(100);
   }
-  /* USER CODE END StartDefaultTask */
+  /* USER CODE END debug_thread */
+}
+
+/* USER CODE BEGIN Header_chassis_thread */
+/**
+* @brief Function implementing the CHASSISTHREAD thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_chassis_thread */
+__weak void chassis_thread(void const * argument)
+{
+  /* USER CODE BEGIN chassis_thread */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END chassis_thread */
+}
+
+/* USER CODE BEGIN Header_gimbal_thread */
+/**
+* @brief Function implementing the GIMBALTHREAD thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_gimbal_thread */
+__weak void gimbal_thread(void const * argument)
+{
+  /* USER CODE BEGIN gimbal_thread */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END gimbal_thread */
+}
+
+/* USER CODE BEGIN Header_kernal_thread */
+/**
+* @brief Function implementing the KERNALTHREAD thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_kernal_thread */
+__weak void kernal_thread(void const * argument)
+{
+  /* USER CODE BEGIN kernal_thread */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END kernal_thread */
+}
+
+/* USER CODE BEGIN Header_detect_thread */
+/**
+* @brief Function implementing the DETECTHREAD thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_detect_thread */
+__weak void detect_thread(void const * argument)
+{
+  /* USER CODE BEGIN detect_thread */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END detect_thread */
 }
 
 /* Private application code --------------------------------------------------*/

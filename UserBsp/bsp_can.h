@@ -12,23 +12,74 @@
 
 #include "stm32f4xx_hal.h"
 
+
 typedef enum
 {
-  CAN_3508_M1_ID                    = 0x201,
-  CAN_3508_M2_ID                    = 0x202,
-  CAN_3508_M3_ID                    = 0x203,
-  CAN_3508_M4_ID                    = 0x204,
-  CAN_3508_M5_ID                    = 0x205,
-  CAN_3508_M6_ID                    = 0x206,	
+  FricLeft     = 0,  //
+  FricRight    = 1,		
+}FricModule_ID;
+
+typedef enum
+{  
+	MotoStir     = 0,	
+  MotoPit      = 1,  //
+  MotoYaw    = 2,	 	
+	CGLink       = 3,
+}GimbalModule_ID;
+
+typedef enum
+{  
+	MotoLeftUp     			    = 0,	
+  MotoRightUp      			= 1,  //
+  MotoLeftDown     		  = 2,	 	
+	MotoRightDown 		  = 3,
+  MotoMidUp     		      = 4,	 	
+	MotoMidDown 		      = 5,	
+	MotoNumber             = 6,
+}ChassisModule_ID;
+
+typedef enum
+{
+	LinkNormal     = 0,		
+	StirNormal      = 1,
+  YawNormal      = 2, //
+  YawVision      = 3,	 	
+  PitNormal      = 4,  //
+  PitVision      = 5,	 	
+}GimbalModuleCtrl_ID;
+
+typedef enum
+{
+  CAN_3508_M1_ID           = 0x201,
+  CAN_3508_M2_ID           = 0x202,
+  CAN_3508_M3_ID           = 0x203,
+  CAN_3508_M4_ID           = 0x204,
+  CAN_3508_M5_ID           = 0x205,
+  CAN_3508_M6_ID           = 0x206,
+	CAN_SLAVE_M1_ID          = 0x311,
+	CAN_SLAVE_M2_ID          = 0x312,	
+	CAN_SEND_M1_ID           = 0x301,
+	CAN_SEND_M2_ID           = 0x302,	
 } can_msg_id2;
+
 typedef enum
 {
-  CAN_3508_FL_ID                    = 0x202,
-  CAN_3508_FR_ID                    = 0x203,
-  CAN_STIR_ID                       = 0x201,	
-	CAN_PIT_ID                        = 0x205,
-  CAN_YAW_ID                        = 0x206, 	
+  CAN_STIR_ID              		= 0x201,		
+  CAN_3508_FL_ID            = 0x202,
+  CAN_3508_FR_ID            = 0x203,
+	CAN_PIT_ID               			 = 0x205,
+  CAN_YAW_ID              		 = 0x206, 
+  EXT_GAME_STATE         = 0x101,
+  EXT_ROBOT_STATE       = 0x102,	
+  EXT_POWER_DATA        = 0x103,
+  EXT_HEAT_DATA            = 0x104,
+  EXT_XY_POSITION          = 0x105,
+  EXT_ZY_POSITION          = 0X106,
+  EXT_BUFF_MUSK            = 0x107,
+  EXT_ROBOT_HURT           = 0x111,
+  EXT_SHOOT_DATA           = 0x112,		
 } can_msg_id1;
+
 typedef union
 {
 	uint8_t c[2];
@@ -52,7 +103,6 @@ typedef struct
 	float pit_speed_last;		
 }gyro_param;
 
-
 /* can receive motor parameter structure */
 #define FILTER_BUF 5
 typedef struct
@@ -65,16 +115,10 @@ typedef struct
   int16_t  torque;	
   int32_t  round_cnt;
   int32_t  total_ecd;
-  float      total_angle;
-  float      stir_angle;
-  float      angle_offset;
+  float    total_angle;
+	float    offset_angle;
   uint16_t offset_ecd;
-  uint32_t msg_cnt;
-  int32_t  ecd_raw_rate;
-  int32_t  rate_buf[FILTER_BUF];
-  uint8_t  buf_cut;
-  int32_t  filter_rate;
-	
+  uint8_t  init_flag;	
 } moto_param;
 
 typedef __packed struct 
@@ -231,11 +275,11 @@ typedef __packed struct
 	uint8_t data[112];
 } robot_interactive_data_t;
 
-extern	moto_param    moto_pit;
-extern	moto_param    moto_yaw;
-extern	moto_param    moto_chassis[6];
 
-extern   wl4data           data4bytes;
+extern  moto_param  moto_fric[2];
+extern	moto_param  moto_chassis[6];
+extern  moto_param  moto_gimbal[3];
+extern  wl4data     data4bytes;
 
 extern ext_game_state_t               ext_game_state;
 extern ext_game_robot_state_t     ext_game_robot_state;
@@ -251,7 +295,8 @@ void send_gimbal_ms(uint32_t id,uint8_t data[8]);
 void send_chassis_ms(uint32_t id,uint8_t data[8]);
 void encoder_data_handle(moto_param* ptr,uint8_t RxData[8]);
 void gyro_data_handle(wl2data* ptr,wl4data* ptrr,gyro_param* gyro,uint8_t RxData[8]);
-void send_gimbal_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);   //CAN 2
-void send_chassis_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);  //CAN 1
+void send_gimbal_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);   //CAN 1
+void send_chassis_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);  //CAN 2
+
 void send_405(uint32_t id,uint8_t data[8]);
 #endif

@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ..\DeCode; ..\RmLib; ..\UserBsp; ..\MainTasks</IncludePath>
+              <IncludePath>../Inc;    ../Drivers/STM32F4xx_HAL_Driver/Inc;    ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;    ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;    ../Drivers/CMSIS/Include;    ../Middlewares/Third_Party/FreeRTOS/Source/include;    ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;    ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;    ..\DeCode;    ..\RmLib;    ..\UserBsp;    ..\MainTasks</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -454,11 +454,6 @@
               <FilePath>..\RmLib\pid.c</FilePath>
             </File>
             <File>
-              <FileName>ramp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\RmLib\ramp.c</FilePath>
-            </File>
-            <File>
               <FileName>STMGood.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\RmLib\STMGood.c</FilePath>
@@ -467,6 +462,16 @@
               <FileName>imu_handle.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\RmLib\imu_handle.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RmLib\user_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>km_handle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RmLib\km_handle.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -494,9 +499,24 @@
           <GroupName>Application/MainTasks</GroupName>
           <Files>
             <File>
-              <FileName>detect_task.c</FileName>
+              <FileName>chassis_thread.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\MainTasks\detect_task.c</FilePath>
+              <FilePath>..\MainTasks\chassis_thread.c</FilePath>
+            </File>
+            <File>
+              <FileName>detect_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainTasks\detect_thread.c</FilePath>
+            </File>
+            <File>
+              <FileName>gimbal_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainTasks\gimbal_thread.c</FilePath>
+            </File>
+            <File>
+              <FileName>kernal_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MainTasks\kernal_thread.c</FilePath>
             </File>
           </Files>
         </Group>

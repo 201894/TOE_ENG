@@ -10,7 +10,7 @@
 #include "string.h"
 #include "usart.h"
 #include "bsp_uart.h"
-rc_info_t   rc;
+rc_info_t   rc,lrc;
 
 uint8_t  dbus_buf[DBbus_BUFLEN];
  
