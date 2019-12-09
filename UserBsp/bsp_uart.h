@@ -17,10 +17,12 @@
 /* usart relevant */
 #define Dbus_usart              huart1 //for dji remote controler reciever
 
-#define BT_usart                 huart6 //for debug 
-#define DBUS_USART               USART1 //for dji remote controler reciever
+#define bt_usart                 huart7 //for debug 
+#define DBUS_USART         USART1 //for dji remote controler reciever
 
-#define BT_USART              USART6//for debug
+#define BT_USART              UART7//for debug
+
+#define BT_BUFLEN       1
 void uart1_device_init(void);
 void uart7_device_init(void);
 void uart6_device_init(void);
@@ -33,5 +35,5 @@ uint8_t dma_current_memory_target(DMA_Stream_TypeDef *dma_stream);
 uint16_t dma_current_data_counter(DMA_Stream_TypeDef *dma_stream);
 void UART_RX_IDLE_IRQ(UART_HandleTypeDef *huart);
 
-extern  uint8_t uart7_buff[50],uart6_buff[50],uart1_buff[50];
+extern  uint8_t pc_buf[50],bt_buf[50];
 #endif

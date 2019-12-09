@@ -28,6 +28,8 @@
 /* USER CODE BEGIN Includes */     
 #include "bsp_io.h"
 #include "km_handle.h"
+#include "bsp_uart.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +56,7 @@ osThreadId CHASSISTHREADHandle;
 osThreadId GIMBALTHREADHandle;
 osThreadId KERNALTHREADHandle;
 osThreadId DETECTHREADHandle;
+osThreadId IMUTHREADHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -65,6 +68,7 @@ void chassis_thread(void const * argument);
 void gimbal_thread(void const * argument);
 void kernal_thread(void const * argument);
 void detect_thread(void const * argument);
+void imu_thread(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -136,12 +140,16 @@ void MX_FREERTOS_Init(void) {
   GIMBALTHREADHandle = osThreadCreate(osThread(GIMBALTHREAD), NULL);
 
   /* definition and creation of KERNALTHREAD */
-  osThreadDef(KERNALTHREAD, kernal_thread, osPriorityIdle, 0, 256);
+  osThreadDef(KERNALTHREAD, kernal_thread, osPriorityNormal, 0, 256);
   KERNALTHREADHandle = osThreadCreate(osThread(KERNALTHREAD), NULL);
 
   /* definition and creation of DETECTHREAD */
   osThreadDef(DETECTHREAD, detect_thread, osPriorityIdle, 0, 128);
   DETECTHREADHandle = osThreadCreate(osThread(DETECTHREAD), NULL);
+
+  /* definition and creation of IMUTHREAD */
+  osThreadDef(IMUTHREAD, imu_thread, osPriorityIdle, 0, 128);
+  IMUTHREADHandle = osThreadCreate(osThread(IMUTHREAD), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -161,11 +169,23 @@ void debug_thread(void const * argument)
   /* USER CODE BEGIN debug_thread */
   /* Infinite loop */
   for(;;)
-  {
-		
-		flow_led();
+  {		
 
-//    osDelay(100);
+ #if 1
+		printf("##RC REVENLENT : ##\r\n");		
+		printf("rc.ch0 = %d\r\n",rc.ch0);
+		printf("rc.ch1 = %d\r\n",rc.ch1);		
+		printf("rc.sw1 = %d\r\n",rc.sw1);		
+		printf("rc.sw2 = %d\r\n",rc.sw2);		
+ #endif
+ #if 1
+		printf("##KM REVENLENT : ##\r\n");		
+		printf("rc.mouse.l = %d\r\n",rc.mouse.l);
+		printf("rc.mouse.x = %d\r\n",rc.mouse.x);		
+		printf("key_code = %d\r\n",rc.kb.key_code);		
+ #endif		
+    flow_led(1500,5);
+		osDelay(1);
   }
   /* USER CODE END debug_thread */
 }
@@ -240,6 +260,24 @@ __weak void detect_thread(void const * argument)
     osDelay(1);
   }
   /* USER CODE END detect_thread */
+}
+
+/* USER CODE BEGIN Header_imu_thread */
+/**
+* @brief Function implementing the IMUTHREAD thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_imu_thread */
+__weak void imu_thread(void const * argument)
+{
+  /* USER CODE BEGIN imu_thread */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END imu_thread */
 }
 
 /* Private application code --------------------------------------------------*/

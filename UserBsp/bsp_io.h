@@ -10,7 +10,7 @@
 #define __BSP_IO_H__
 #include "stm32f4xx_hal.h"
 #include  "gpio.h"
-
+#include "tim.h"
 
 #define LASER_ON    HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_SET)
 #define LASER_OFF   HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_RESET)
@@ -26,10 +26,10 @@
 
 #define DETECT_FLOW_LED_ON(i) flow_led_on(i)
 #define DETECT_FLOW_LED_OFF(i) flow_led_off(i)
-
-void busser_task(void);
+void GPIO_InitArgument(void);
+void busser_init(float arr, uint16_t length);
 void vcc_out_init(void);
-void flow_led(void);
+void flow_led(uint32_t period,uint8_t number);
 void flow_led_on(uint16_t num);
 void flow_led_off(uint16_t num);
 #endif

@@ -49,8 +49,12 @@ toe_eng\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 toe_eng\freertos.o: ..\UserBsp\bsp_io.h
 toe_eng\freertos.o: ../Inc/gpio.h
+toe_eng\freertos.o: ../Inc/tim.h
 toe_eng\freertos.o: ..\RmLib\km_handle.h
 toe_eng\freertos.o: ..\DeCode\DR16_decode.h
 toe_eng\freertos.o: ..\RmLib\RMsystem.h
 toe_eng\freertos.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\freertos.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
+toe_eng\freertos.o: ..\UserBsp\bsp_uart.h
+toe_eng\freertos.o: ../Inc/usart.h
+toe_eng\freertos.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h

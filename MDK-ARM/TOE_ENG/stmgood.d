@@ -33,3 +33,7 @@ toe_eng\stmgood.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 toe_eng\stmgood.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 toe_eng\stmgood.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\stmgood.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+toe_eng\stmgood.o: ..\UserBsp\bsp_uart.h
+toe_eng\stmgood.o: ../Inc/usart.h
+toe_eng\stmgood.o: ../Inc/main.h
+toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h

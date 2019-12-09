@@ -55,3 +55,4 @@ toe_eng\kernal_thread.o: ..\RmLib\RMsystem.h
 toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\kernal_thread.o: ..\MainTasks\chassis_thread.h
+toe_eng\kernal_thread.o: ..\MainTasks\gimbal_thread.h

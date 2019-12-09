@@ -30,6 +30,18 @@
 #define GORGI_GM_OFFSET                8.0f
 chassis_t chassis;
 
+void chassis_pid_init(void)
+{
+	for(int i=0;i<6;i++)
+	{
+	  memset(&moto_chassis[i],0,sizeof(moto_param));
+	  PID_struct_init(&pid_chassis[i],6000,15000,0,0,0);              //          
+	} 
+	
+	PID_struct_init(&pid_out[CGLink],0,0,0,0,0);  
+  PID_struct_init(&pid_in[LinkNormal],0,0,0,0,0);  
+}
+
 void chassis_thread(void const * argument)
 {
   /* USER CODE BEGIN logic_handle_task */
@@ -196,15 +208,5 @@ static void corgi_mode_ctrl(int16_t Corgi_Angle, \
 }
 
 
-void chassis_param_init(void)
-{
-	for(int i=0;i<6;i++)
-	{
-	  memset(&moto_chassis[i],0,sizeof(moto_param));
-	  PID_struct_init(&pid_chassis[i],6000,15000,0,0,0);              //          
-	} 
-	
-	PID_struct_init(&pid_out[CGLink],0,0,0,0,0);  
-  PID_struct_init(&pid_in[LinkNormal],0,0,0,0,0);  
-}
+
 

@@ -8,15 +8,14 @@
  *  @copyright 2017 DJI RoboMaster. All rights reserved.
  *
  */
-#ifndef  _IMU_HANDLE_H_
-#define _IMU_HANDLE_H_
+#ifndef  _IMU_THREAD_H_
+#define _IMU_THREAD_H_
 
 #include "stm32f4xx_hal.h"
-#include <math.h>
 #include "pid.h"
 #include "Mpu6500.h"
 
-
+#define abs(x) ((x)>0? (x):(-(x)))
 #define IMU_TARGET_TEMP 50
 
 void init_quaternion(void);

@@ -41,6 +41,6 @@ typedef struct
 static void gimbal_pid_handle(void);
 static void gimbal_mode_switch(void);
 static void gimbal_target_handle(rc_info_t *_rc , gimbal_t *_gimbal);
-void gimbal_param_init(void);
+void gimbal_pid_init(void);
 extern gimbal_t gimbal;
 #endif

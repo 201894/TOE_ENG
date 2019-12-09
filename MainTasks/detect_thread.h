@@ -1,5 +1,5 @@
 
-/** @file detect_task.h
+/** @file detect_thread.h
  *  @version 1.1
  *  @date Feb 2019
  *
@@ -12,33 +12,44 @@
 #define __DETECT_THREAD_H__
 
 #include "stm32f4xx_hal.h"
-#include "RMsystem.h"
+#include "bsp_can.h"
 /* detect task period time (ms) */
-#define DETECT_TASK_PERIOD 50
+
+typedef enum
+{	
+   STIR,
+	 YAW,
+	 PIT,
+	 FRIC,
+	 CHASSIS,
+	 JUDGE,
+	 NUC,
+	 DEBUS,
+	 IMU,
+	 COMMU,
+	 GYROY,
+	 GYROP,
+ 
+}module_fps_e;
 
 typedef enum
 {
-  BOTTOM_DEVICE            = 0,
-  GIMBAL_GYRO_OFFLINE  = 1,
-  CHASSIS_GYRO_OFFLINE = 2,
-  CHASSIS_M1_OFFLINE   = 3,
-  CHASSIS_M2_OFFLINE   = 4,
-  CHASSIS_M3_OFFLINE   = 5,
-  CHASSIS_M4_OFFLINE   = 6,
-  REMOTE_CTRL_OFFLINE  = 7,
-  JUDGE_SYS_OFFLINE     = 8,
-  PC_SYS_OFFLINE            = 9,
-  GIMBAL_YAW_OFFLINE   = 10,
-  GIMBAL_BPIT_OFFLINE   = 11,
-  GIMBAL_SPIT_OFFLINE   = 12,
-  BASKET_MOTOR_OFFLINE  = 13,
-  FRIC_MOTOR_OFFLINE    = 14,
-  STIR_M1_OFFLINE           = 15,	
-  STIR_M3_OFFLINE           = 16,  
-  BULLET_JAM                     = 17,
-  CHASSIS_CONFIG_ERR   = 18,
-  GIMBAL_CONFIG_ERR    = 19,
-  ERROR_LIST_LENGTH    = 20,
+  BOTTOM_DEVICE            					= 0,
+  UART_DEBUS_OFFLINE 	  			  = 1,	  
+  UART_NUC_OFFLINE 	  					  = 2,	
+  CAN_JUDGE_OFFLINE  					  = 3,	
+  CAN_COMMU_OFFLINE 	  	= 4,		
+  CAN_YAW_M1_OFFLINE  					= 5,
+  CAN_PIT_M1_OFFLINE 	  					= 6,
+  CAN_YAW_IMU_OFFLINE  				= 7,
+  CAN_PIT_IMU_OFFLINE 	  			  = 8,	
+  CAN_FRIC_M1_OFFLINE    				= 9,
+  CAN_CHASSIS_OFFLINE    	      = 10,	
+  CAN_STIR_M1_OFFLINE          	= 11,  
+  BULLET_JAM               							= 12,
+  CHASSIS_CONFIG_ERR   		 			= 13,
+  GIMBAL_CONFIG_ERR   	 					= 14,
+  ERROR_LIST_LENGTH    					= 15,
 } err_id_e;
 
 typedef enum
@@ -82,11 +93,22 @@ typedef struct
   uint16_t beep_ctrl;
 } global_err_t;
 
+typedef struct
+{
+  /* error alarm relevant */
+  uint16_t fps;
+  uint16_t cnt;
+  uint16_t beep_ctrl;
+	
+} global_fps_t;
+
 extern global_err_t g_err;
+extern global_fps_t g_fps[MaxId];
 void detector_init(void);
 void err_detector_hook(int err_id);
-
-void detector_param_init(void);
+void DETECT_InitArgument(void);
 static void module_offline_callback(void);
 static void module_offline_detect(void);
+static void module_fps_detect(void);
+static void module_fps_clear(void);
 #endif

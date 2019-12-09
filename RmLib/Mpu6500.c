@@ -1,21 +1,20 @@
 
-
+#include "imu_thread.h"
 #include "Mpu6500.h"
 #include "mpu6500_reg.h"
 #include "IST8310_reg.h"
+#include "bsp_uart.h"
 #include "spi.h"
 #include "freertos.h"
 #include "kalman_filter.h"
 #include "gpio.h"
 #include <string.h>
 
-kalman1_state kalman_imu;
 uint8_t MPU_id = 0;
 
 IMUDataTypedef imu_data = {0,0,0,0,0,0,0,0,0,0};
 IMUDataTypedef imu_data_forcal = {0,0,0,0,0,0,0,0,0,0};
 IMUDataTypedef imu_data_offset = {0,0,0,0,0,0,0,0,0,0};
-
 
 //Write a register to MPU6500
 uint8_t MPU6500_Write_Reg(uint8_t const reg, uint8_t const data)
@@ -72,7 +71,8 @@ static void IST_Reg_Write_By_MPU(uint8_t addr, uint8_t data)
   MPU6500_Write_Reg(MPU6500_I2C_SLV1_REG, addr);
   HAL_Delay(2);
   MPU6500_Write_Reg(MPU6500_I2C_SLV1_DO, data);
-  HAL_Delay(2);  
+  HAL_Delay(2);
+  
   MPU6500_Write_Reg(MPU6500_I2C_SLV1_CTRL, 0x080 | 0x01);
   HAL_Delay(10);
 }
@@ -80,6 +80,7 @@ static void IST_Reg_Write_By_MPU(uint8_t addr, uint8_t data)
 static uint8_t IST_Reg_Read_By_MPU(uint8_t addr)
 {
   uint8_t data;
+  
   MPU6500_Write_Reg(MPU6500_I2C_SLV4_REG, addr);
   HAL_Delay(10);
   MPU6500_Write_Reg(MPU6500_I2C_SLV4_CTRL, 0x80);
@@ -176,11 +177,13 @@ uint8_t MPU6500_Set_Gyro_Fsr(uint8_t fsr)
   return MPU6500_Write_Reg(MPU6500_GYRO_CONFIG, fsr<<3);
 }
 
+//Get 6 axis data from MPU6500
+
 
 void IMU_Get_Data()
 {
     uint8_t mpu_buff[14];
-    MPU6500_Read_Regs(MPU6500_ACCEL_XOUT_H , mpu_buff, 14);//14
+  MPU6500_Read_Regs(MPU6500_ACCEL_XOUT_H , mpu_buff, 14);//14
 	imu_data_forcal.ax = mpu_buff[0]<<8 |mpu_buff[1];
 	imu_data_forcal.ay = mpu_buff[2]<<8 |mpu_buff[3];
 	imu_data_forcal.az = mpu_buff[4]<<8 |mpu_buff[5];
@@ -194,16 +197,25 @@ void IMU_Get_Data()
 	imu_data_forcal.gy = imu_data.gy - imu_data_offset.gy;
 	imu_data_forcal.gz = imu_data.gz - imu_data_offset.gz;
 	
-//	if (abs(imu_data_forcal.gx)<=10)  imu_data_forcal.gx = 0;
-//	if (abs(imu_data_forcal.gy)<=10)  imu_data_forcal.gy = 0;
-//	if (abs(imu_data_forcal.gz)<=10)  imu_data_forcal.gz = 0;	
+	/*imu_data_forcal.mx = mpu_buff[14]<<8 |mpu_buff[15];
+	imu_data_forcal.my = mpu_buff[16]<<8 |mpu_buff[17];
+	imu_data_forcal.mz = mpu_buff[18]<<8 |mpu_buff[19];*/
 	
-//	 YUN_Param.Pitch_Speed   = - imu_data.gy * 0.06103515625F;  // y
-   //    imu_data_forcal.gy = kalman1_filter(&kalman_imu,imu_data_forcal.gy);
-//	 YUN_Param.YAW_Speed =  -imu_data.gz * 0.06103515625F;
+	/************ÐÂÔö**************/
+//#if RobotID == 4
+//	if(abs(imu_data_forcal.gz) <= 15) imu_data_forcal.gz = 0;
+//	if(abs(imu_data_forcal.gy) <= 15) imu_data_forcal.gy = 0;
+//	if(abs(imu_data_forcal.gz) <= 15) imu_data_forcal.gz = 0;
+//#elif RobotID == 3
+//	if(abs(imu_data_forcal.gz) <= 15) imu_data_forcal.gz = 0;
+//	if(abs(imu_data_forcal.gy) <= 15) imu_data_forcal.gy = 0;
+//	if(abs(imu_data_forcal.gz) <= 15) imu_data_forcal.gz = 0;
+//#endif
 }
 
 
+
+//Initialize the MPU6500
 
 static void mpu_offset_init(void){
 	uint8_t mpu_buff[6];
@@ -221,21 +233,22 @@ static void mpu_offset_init(void){
 	imu_data_offset.gx = offset_gx / 300;
 	imu_data_offset.gy = offset_gy / 300;
 	imu_data_offset.gz = offset_gz / 300;
-
 }
-uint8_t mpu_device_Init(void)
+
+uint8_t MPU6500_Init(void)
 {
+	//const static float yaw_anglespd_filter[1] = {0.000186f};
   memset(&imu_data,0,sizeof(IMUDataTypedef));
   memset(&imu_data_forcal,0,sizeof(IMUDataTypedef));
   memset(&imu_data_offset,0,sizeof(IMUDataTypedef));
   PID_Temp_Init();
-//  ENABLE_IST;
+  ENABLE_IST;
   MPU6500_Write_Reg(MPU6500_PWR_MGMT_1, 0x80);
-  HAL_Delay(200);
+  HAL_Delay(100);
   MPU6500_Write_Reg(MPU6500_SIGNAL_PATH_RESET, 0x07);
-  HAL_Delay(200);
+  HAL_Delay(100);
   if (MPU6500_ID != MPU6500_Read_Reg(MPU6500_WHO_AM_I)){
-	  HAL_Delay(400);
+	  HAL_Delay(500);
 	  if (MPU6500_ID != MPU6500_Read_Reg(MPU6500_WHO_AM_I)){
 		printf("imu offline!\r\n");
 		return 1;
@@ -261,7 +274,8 @@ uint8_t mpu_device_Init(void)
   IST8310_Init();
   mpu_offset_init();
   init_quaternion();
-  	kalman1_init(&kalman_imu,0,100);
+	
+	//first_order_filter_init(&yaw.anglespd_lpf, 0.001, yaw_anglespd_filter);
   return 0;
 }
 

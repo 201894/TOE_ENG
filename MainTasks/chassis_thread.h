@@ -58,6 +58,6 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis);
 static void corgi_mode_ctrl(int16_t Corgi_Angle, \
 	                                  int16_t sRevolMax, \
                                     uint8_t Corgi_Mode); //Å¤ÑüÄ£Ê½
-void chassis_param_init(void);
+void chassis_pid_init(void);
 extern chassis_t chassis;
 #endif

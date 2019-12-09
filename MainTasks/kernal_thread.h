@@ -38,4 +38,8 @@ static void get_gimbal_mode(void);
 static void chassis_mode_handle(void);
 static void gimbal_mode_handle(void);
 static void stir_freq_ctrl(void);
+
+void PID_InitArgument(void);
+void MODE_InitArgument(void);
+
 #endif

@@ -53,3 +53,14 @@ toe_eng\main.o: ../Inc/spi.h
 toe_eng\main.o: ../Inc/tim.h
 toe_eng\main.o: ../Inc/usart.h
 toe_eng\main.o: ../Inc/gpio.h
+toe_eng\main.o: ..\UserBsp\bsp_uart.h
+toe_eng\main.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\main.o: ..\RmLib\STMGood.h
+toe_eng\main.o: ..\UserBsp\bsp_can.h
+toe_eng\main.o: ..\MainTasks\chassis_thread.h
+toe_eng\main.o: ..\DeCode\DR16_decode.h
+toe_eng\main.o: ..\RmLib\RMsystem.h
+toe_eng\main.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
+toe_eng\main.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
+toe_eng\main.o: ..\UserBsp\bsp_io.h
+toe_eng\main.o: ..\MainTasks\kernal_thread.h

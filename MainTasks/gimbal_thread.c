@@ -30,7 +30,7 @@
 
 gimbal_t gimbal;
 
-void gimbal_param_init(void)
+void gimbal_pid_init(void)
 {
 			/*  PID PARAMETER OF TWO 3508 FRIC MOTOR      */	
 	PID_struct_init(&pid_fric[FricLeft],0,0,0,0,0);  

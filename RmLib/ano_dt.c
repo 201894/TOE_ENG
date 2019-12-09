@@ -126,7 +126,7 @@ void ANO_DT_Data_Exchange(void)
 }
 void ANO_DT_Send_Data(uint8_t *dataToSend , uint8_t length)
 {
-      HAL_UART_Transmit(&BT_usart,dataToSend,length,20);
+      HAL_UART_Transmit(&bt_usart,dataToSend,length,20);
 }
 
 //void ANO_DT_Data_Receive_Prepare(uint8_t data)
@@ -275,7 +275,7 @@ void ANO_DT_Send_Data(uint8_t *dataToSend , uint8_t length)
 //		ANO_DT_Send_Check(*(data_buf+2),sum);
 //	}
 //}
-void ANO_DT_Send_Senser(int16_t target,int16_t angle,float crtout,float speed,int16_t current,int16_t speed1,int16_t current1,int16_t speed2,int16_t current2,int32_t bar)
+void ANO_DT_Send_Senser(int16_t target,int16_t angle,int16_t crtout,int16_t speed,int16_t current,int16_t speed1,int16_t current1,int16_t speed2,int16_t current2,int32_t bar)
 {
 	uint8_t _cnt=0;
 	volatile int16_t _temp;
@@ -291,10 +291,10 @@ void ANO_DT_Send_Senser(int16_t target,int16_t angle,float crtout,float speed,in
 	_temp = angle;
 	data_to_send[_cnt++]=BYTE1(_temp);
 	data_to_send[_cnt++]=BYTE0(_temp);
-	_temp =(int)(crtout*1000) ;
+	_temp = crtout;
 	data_to_send[_cnt++]=BYTE1(_temp);
 	data_to_send[_cnt++]=BYTE0(_temp);
-	_temp =(int)(speed*1000) ;	
+	_temp = speed;	
 	data_to_send[_cnt++]=BYTE1(_temp);
 	data_to_send[_cnt++]=BYTE0(_temp);
 	_temp = current;	

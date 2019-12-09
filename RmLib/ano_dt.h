@@ -31,7 +31,7 @@ typedef struct
 
 void ANO_DT_Data_Exchange(void);
 void ANO_DT_Send_Data(uint8_t *dataToSend , uint8_t length);
-void ANO_DT_Send_Senser(int16_t target,int16_t angle,float crtout,float speed,int16_t current,int16_t speed1,int16_t current1,int16_t speed2,int16_t current2,int32_t bar);
+void ANO_DT_Send_Senser(int16_t target,int16_t angle,int16_t crtout,int16_t speed,int16_t current,int16_t speed1,int16_t current1,int16_t speed2,int16_t current2,int32_t bar);
 void ANO_DT_Send_RCData(uint16_t thr,uint16_t yaw,uint16_t rol,uint16_t pit,uint16_t aux1,uint16_t aux2,uint16_t aux3,uint16_t aux4,uint16_t aux5,uint16_t aux6);
 void ANO_DT_Send_Power(uint16_t votage, uint16_t current);
 void ANO_DT_Send_MotoPWM(uint16_t m_1,uint16_t m_2,uint16_t m_3,uint16_t m_4,uint16_t m_5,uint16_t m_6,uint16_t m_7,uint16_t m_8);

@@ -1,5 +1,5 @@
 toe_eng\mpu6500.o: ..\RmLib\Mpu6500.c
-toe_eng\mpu6500.o: ..\RmLib\Mpu6500.h
+toe_eng\mpu6500.o: ..\MainTasks\imu_thread.h
 toe_eng\mpu6500.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 toe_eng\mpu6500.o: ../Inc/stm32f4xx_hal_conf.h
 toe_eng\mpu6500.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -34,10 +34,14 @@ toe_eng\mpu6500.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 toe_eng\mpu6500.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\mpu6500.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 toe_eng\mpu6500.o: ..\RmLib\pid.h
+toe_eng\mpu6500.o: ..\RmLib\Mpu6500.h
 toe_eng\mpu6500.o: ..\RmLib\mpu6500_reg.h
 toe_eng\mpu6500.o: ..\RmLib\IST8310_reg.h
-toe_eng\mpu6500.o: ../Inc/spi.h
+toe_eng\mpu6500.o: ..\UserBsp\bsp_uart.h
+toe_eng\mpu6500.o: ../Inc/usart.h
 toe_eng\mpu6500.o: ../Inc/main.h
+toe_eng\mpu6500.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\mpu6500.o: ../Inc/spi.h
 toe_eng\mpu6500.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/freertos.h
 toe_eng\mpu6500.o: ../Inc/FreeRTOSConfig.h
 toe_eng\mpu6500.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

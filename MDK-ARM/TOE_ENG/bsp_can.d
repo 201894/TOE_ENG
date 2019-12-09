@@ -49,6 +49,7 @@ toe_eng\bsp_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\bsp_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 toe_eng\bsp_can.o: ../Inc/can.h
 toe_eng\bsp_can.o: ../Inc/main.h
+toe_eng\bsp_can.o: ..\MainTasks\detect_thread.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h

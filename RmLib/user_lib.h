@@ -45,7 +45,7 @@ extern first_order_filter_type_t pitch_anglespd_lpf;
 extern first_order_filter_type_t yaw_anglespd_lpf;
 
 //快速开方
-
+extern float invSqrt(float num);
 
 ////斜波函数初始化
 //void ramp_init(ramp_function_source_t *ramp_source_type, float frame_period, float max, float min);

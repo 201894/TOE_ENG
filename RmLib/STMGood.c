@@ -7,8 +7,8 @@
  */
 #include "STMGood.h"
 #include "stm32f4xx_hal.h"
+#include "bsp_uart.h"
 
-//#include "info_get_task.h"
  //-----------------------------------头文件包含
  
 //-----------------------------------变量保护区（以下变量不能改变）
@@ -19,10 +19,10 @@ char Data[100];
 char Str1[100];
 double xx[100];
 //-----------------------------------变量保护区（以上变量不能改变）
+
 float _kp,_ki,_kd; 
 float _kkp,_kki,_kkd;
 float target,maxout1,maxout2;
- float buffer_gf;
 //-------------------------------------------------------------------------------
 int cmd(char *Cmd,int n)
 {
@@ -49,49 +49,36 @@ int cmd(char *Cmd,int n)
 	
 	if(CompStr(Cmd,"u"))
   {
-//      _kp = _kp + 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
-		_kp = _kp + 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+      _kp = _kp + 0.05;
+//	 printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
     return 0;
   }
 	if(CompStr(Cmd,"i"))
   {
-//      _ki = _ki + 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
-		_kkp = _kkp + 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+   _kki = _kki + 0.05;
+  //  printf("P=%f  I=%f  D=%f\r\n",_kp,_kki,_kd);
     return 0;
   }
 	if(CompStr(Cmd,"o"))
   {
-//      _kd = _kd + 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
-		_kki = _kki + 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+    _kkp = _kkp + 0.05;
+ //   printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
     return 0;
   }
 	if(CompStr(Cmd,"j"))
   {
-//      _kp = _kp - 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
-		_kp = _kp - 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+        _kp = _kp - 0.05;
+
+    return 0;
   }
 	if(CompStr(Cmd,"k"))
   {
-//      _ki = _ki - 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_ki,_kd);
-		_kkp = _kkp - 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+     _kki = _kki - 0.05;
     return 0;
   }
 	if(CompStr(Cmd,"l"))
   {
-//      _kd = _kd - 0.05;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
-		_kki = _kki - 0.05;
-		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+      _kkp = _kkp - 0.05;
     return 0;
   }
 	if(CompStr(Cmd,"p"))
@@ -99,41 +86,38 @@ int cmd(char *Cmd,int n)
     _kp = 0.0;
 		_kkp = 0.0;
 		_kki = 0.0;
-//		printf("P=%f  I=%f  D=%f\r\n",_kp,_kkp,_kki);
+//		printf("P=%f  I=%f  D=%f\r\n",P,I,D);
     return 0;
   }
 	
 	return 0;
 }
-
 void multi1(int n)
 {
 	_kp= xx[1];
 	_ki = xx[2];
     _kd = xx[3];
-//	printf("################\r\n");
+	printf("################\r\n");
 	printf("PO:%f IO:%f DO:%f\r\n",_kp,_ki,_kd);
 }
+
 void multi2(int n)
 {
 	_kkp = xx[1];
 	_kki  = xx[2];
 	_kkd = xx[3];
-//	printf("################\r\n");
-//	printf("PI:%f II:%f DI:%f\r\n",_kkp,_kki,_kkd);		
+	printf("################\r\n");
+	printf("PI:%f II:%f DI:%f\r\n",_kkp,_kki,_kkd);		
 }
 void multi3(int n)
 {
 
-  maxout1 = xx[1];
-  maxout2 = xx[2];
-  buffer_gf = xx[3];
-//  printf("################\r\n");
-//  printf("maxout1:%f maxout2:%f\r\n",maxout1,maxout2);
+   printf("################\r\n");
+   printf("maxout1:%f maxout2:%f\r\n",maxout1,maxout2);
 }
 void multi4(int n)
-{	
-
+{
+     _kkd = (int)xx[2];	
 //	gimbal.target[0]  = xx[2];
 }
 
@@ -462,7 +446,6 @@ void Dealdata(int Rx)                  //处理上位机发送过来的数据
   }
 	if (Rx==')')
 	{
-//		printf("sdasfadsfsadfadsfadsf");
 	  Data[Count]='\0';
 	  Count=0;
 	  for (i=0;i<Strlen(Data)-1;i++)

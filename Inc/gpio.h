@@ -32,6 +32,7 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
+#define ENABLE_IST   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_SET)
 
 /* USER CODE END Private defines */
 

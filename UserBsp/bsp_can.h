@@ -17,6 +17,7 @@ typedef enum
 {
   FricLeft     = 0,  //
   FricRight    = 1,		
+	MotoFric    = 3,
 }FricModule_ID;
 
 typedef enum
@@ -24,18 +25,19 @@ typedef enum
 	MotoStir     = 0,	
   MotoPit      = 1,  //
   MotoYaw    = 2,	 	
-	CGLink       = 3,
+	CGLink       = 3,  	
 }GimbalModule_ID;
 
 typedef enum
 {  
 	MotoLeftUp     			    = 0,	
   MotoRightUp      			= 1,  //
-  MotoLeftDown     		  = 2,	 	
+  MotoLeftDown     		= 2,	 	
 	MotoRightDown 		  = 3,
   MotoMidUp     		      = 4,	 	
 	MotoMidDown 		      = 5,	
 	MotoNumber             = 6,
+	MaxId                        = 20,		
 }ChassisModule_ID;
 
 typedef enum
@@ -291,6 +293,7 @@ extern ext_robot_hurt_t                 ext_robot_hurt;
 
 void can_device_init(void);
 void can_receive_start(void);
+void CAN_InitArgument(void);
 void send_gimbal_ms(uint32_t id,uint8_t data[8]);
 void send_chassis_ms(uint32_t id,uint8_t data[8]);
 void encoder_data_handle(moto_param* ptr,uint8_t RxData[8]);

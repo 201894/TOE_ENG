@@ -14,6 +14,7 @@
 #include "STMGood.h"
 #include "km_handle.h"
 #include "chassis_thread.h"
+#include "gimbal_thread.h"
 
 kernal_ctrl_t kernal_ctrl;
 
@@ -169,7 +170,11 @@ static void stir_freq_ctrl(void)
 	
 }
 
-
+void PID_InitArgument(void)
+{
+		chassis_pid_init();
+		gimbal_pid_init();
+}
 
 
 

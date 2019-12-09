@@ -37,6 +37,8 @@ toe_eng\bsp_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\bsp_uart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 toe_eng\bsp_uart.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 toe_eng\bsp_uart.o: ..\RmLib\STMGood.h
+toe_eng\bsp_uart.o: ..\MainTasks\detect_thread.h
+toe_eng\bsp_uart.o: ..\UserBsp\bsp_can.h
 toe_eng\bsp_uart.o: ..\DeCode\DR16_decode.h
 toe_eng\bsp_uart.o: ..\RmLib\RMsystem.h
 toe_eng\bsp_uart.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
