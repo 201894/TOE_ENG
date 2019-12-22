@@ -37,6 +37,9 @@ toe_eng\chassis_thread.o: ..\DeCode\DR16_decode.h
 toe_eng\chassis_thread.o: ..\RmLib\RMsystem.h
 toe_eng\chassis_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\chassis_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
+toe_eng\chassis_thread.o: ..\MainTasks\detect_thread.h
+toe_eng\chassis_thread.o: ..\UserBsp\bsp_can.h
+toe_eng\chassis_thread.o: ..\MainTasks\kernal_thread.h
 toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 toe_eng\chassis_thread.o: ../Inc/FreeRTOSConfig.h
@@ -51,7 +54,10 @@ toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/tim
 toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-toe_eng\chassis_thread.o: ..\UserBsp\bsp_can.h
 toe_eng\chassis_thread.o: ..\RmLib\STMGood.h
 toe_eng\chassis_thread.o: ..\RmLib\pid.h
 toe_eng\chassis_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
+toe_eng\chassis_thread.o: ..\UserBsp\bsp_io.h
+toe_eng\chassis_thread.o: ../Inc/gpio.h
+toe_eng\chassis_thread.o: ../Inc/main.h
+toe_eng\chassis_thread.o: ../Inc/tim.h

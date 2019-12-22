@@ -14,7 +14,7 @@
 #include "stm32f4xx_hal.h"
 
 #define KERNAL_THREAD_PERIOD   5
-
+#define SPD_RATIO   0.2f
 typedef enum
 {
   MANUAL_CTRL_MODE = 0,
@@ -23,12 +23,10 @@ typedef enum
   SAFETY_MODE,
 } global_mode_e;
 
-
 typedef  struct
 {
-	
 
-  global_mode_e  global_mode;
+  global_mode_e  global_mode; // 总模式控制
 } kernal_ctrl_t;
 
 static void fric_speed_ctrl(void);
@@ -41,5 +39,5 @@ static void stir_freq_ctrl(void);
 
 void PID_InitArgument(void);
 void MODE_InitArgument(void);
-
+extern kernal_ctrl_t kernal_ctrl;
 #endif

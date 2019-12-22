@@ -58,3 +58,8 @@ toe_eng\freertos.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\freertos.o: ..\UserBsp\bsp_uart.h
 toe_eng\freertos.o: ../Inc/usart.h
 toe_eng\freertos.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\freertos.o: ..\MainTasks\detect_thread.h
+toe_eng\freertos.o: ..\UserBsp\bsp_can.h
+toe_eng\freertos.o: ..\MainTasks\gimbal_thread.h
+toe_eng\freertos.o: ..\MainTasks\chassis_thread.h
+toe_eng\freertos.o: ..\RmLib\pid.h

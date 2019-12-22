@@ -29,7 +29,11 @@
 #include "bsp_io.h"
 #include "km_handle.h"
 #include "bsp_uart.h"
-
+#include "detect_thread.h"
+#include "gimbal_thread.h"
+#include "bsp_can.h"
+#include "chassis_thread.h"
+#include "pid.h" 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -170,22 +174,73 @@ void debug_thread(void const * argument)
   /* Infinite loop */
   for(;;)
   {		
+/*
+			typedef enum
+			{  
+				MotoLeftUp = 0,MotoRightUp= 1, MotoLeftDown = 2,MotoRightDown= 3,MotoMidUp = 4,	 	MotoMidDown= 5,	MotoNumber= 6,
+				MaxId= 20,		
+			}ChassisModule_ID;	
+			typedef enum
+			{	
+				 STIR,YAW,PIT,FRIC,CHASSIS,JUDGE,NUC,DEBUS,IMU,COMMU,GYROY,GYROP, 
+			}module_fps_e;		
+*/
+#if 0
+		printf("CHASSIS REVENLENT : ##\r\n");		
+		printf("chassis[LeftUp].speed = %d\r\n",moto_chassis[MotoLeftUp].speed_rpm);			
+		printf("chassis[RightUp].speed = %d\r\n",moto_chassis[MotoRightUp].speed_rpm);				
+		printf("chassis[LeftDown].speed = %d\r\n",moto_chassis[MotoLeftDown].speed_rpm);				
+		printf("chassis[RightDown].speed = %d\r\n",moto_chassis[MotoRightDown].speed_rpm);				
+		printf("chassis[MidUp].speed = %d\r\n",moto_chassis[MotoMidUp].speed_rpm);				
+		printf("chassis[MidDown].speed = %d\r\n",moto_chassis[MotoMidDown].speed_rpm);				
+#endif		
+#if 1
+		printf("##FPS REVENLENT : ##\r\n");		
+		printf("fps[STIR] = %d\r\n",r_fps[STIR].fps);
+//		printf("fps[YAW] = %d\r\n",r_fps[YAW].fps);
+		printf("fps[FRIC] = %d\r\n",r_fps[FRIC].fps);		
+		printf("fps[CHASSIS] = %d\r\n",r_fps[CHASSIS].fps);    
+//		printf("fps[JUDGE] = %d\r\n",r_fps[JUDGE].fps);			
+//		printf("fps[NUC] = %d\r\n",r_fps[NUC].fps);					
+		printf("fps[DEBUS] = %d\r\n",r_fps[DEBUS].fps);  
+		printf("fps[LUP] = %d\r\n",r_fps[LUP].fps);  	 
+		printf("fps[RUP] = %d\r\n",r_fps[RUP].fps);  	
+//		printf("fps[IMU] = %d\r\n",r_fps[IMU].fps);  	
+//		printf("fps[COMMU] = %d\r\n",r_fps[COMMU].fps);			
+//		printf("fps[GYROY] = %d\r\n",r_fps[GYROY].fps);			
+//		printf("fps[GYROP] = %d\r\n",r_fps[GYROP].fps);					
+#endif
+		
+#if 1
+				printf("##RC REVENLENT : ##\r\n");		
+				printf("rc.ch0 = %d\r\n",rc.ch0);
+				printf("rc.ch1 = %d\r\n",rc.ch1);		
+				printf("rc.sw1 = %d\r\n",rc.sw1);		
+				printf("rc.sw2 = %d\r\n",rc.sw2);						
+				printf("chassis,vx = %.3f\r\n",chassis.vx);		
+				printf("YawTargrtAngle = %.3f\r\n",gimbal.YawTargrtAngle);						
+#endif
+#if 0
+				printf("##KM REVENLENT : ##\r\n");		
+				printf("rc.mouse.l = %d\r\n",rc.mouse.l);
+				printf("rc.mouse.x = %d\r\n",rc.mouse.x);		
+				printf("key_code = %d\r\n",rc.kb.key_code);		
+#endif
+		 
+#if 0
+			printf("UPLIFT PID REVENLENT : ##\r\n");				
+			printf("TargetAngle = %.2f\r\n",chassis.targetPosition);	
+			printf("CurrentAngle = %.2f\r\n",moto_chassis[MotoLeftUpLift].total_angle);	
+			printf("AngleError = #%.2f\r\n",pid_out[LiftECD].errNow);	
+			printf("FirstCtrOut = %.2f\r\n",pid_out[LiftECD].ctrOut);				
+			printf("CurrentSpd = %df\r\n",moto_chassis[MotoLeftUpLift].speed_rpm);	 // MotoData[RightUpLift].speed_rpm
+			printf("SpdError = %.2f\r\n",pid_in[MotoLUpLft].errNow);			
+			printf("FinalCtrOut = %d\r\n",(int16_t)pid_in[MotoLUpLft].ctrOut);					
+			printf("RightFinalCtrOut = %d\r\n",(int16_t)pid_in[MotoRUpLft].ctrOut);					
+#endif		 
 
- #if 1
-		printf("##RC REVENLENT : ##\r\n");		
-		printf("rc.ch0 = %d\r\n",rc.ch0);
-		printf("rc.ch1 = %d\r\n",rc.ch1);		
-		printf("rc.sw1 = %d\r\n",rc.sw1);		
-		printf("rc.sw2 = %d\r\n",rc.sw2);		
- #endif
- #if 1
-		printf("##KM REVENLENT : ##\r\n");		
-		printf("rc.mouse.l = %d\r\n",rc.mouse.l);
-		printf("rc.mouse.x = %d\r\n",rc.mouse.x);		
-		printf("key_code = %d\r\n",rc.kb.key_code);		
- #endif		
-    flow_led(1500,5);
-		osDelay(1);
+//			ledFlow(1600,8);
+		  osDelay(200);
   }
   /* USER CODE END debug_thread */
 }

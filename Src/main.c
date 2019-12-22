@@ -36,6 +36,7 @@
 #include "chassis_thread.h"
 #include "bsp_io.h" 
 #include "kernal_thread.h"
+#include "detect_thread.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -106,6 +107,7 @@ int main(void)
   MX_TIM12_Init();
   MX_UART7_Init();
   MX_USART1_UART_Init();
+  MX_USART6_UART_Init();
   MX_TIM3_Init();
   MX_UART8_Init();
   /* USER CODE BEGIN 2 */
@@ -116,8 +118,10 @@ int main(void)
    	HAL_Delay(200);		
 	PID_InitArgument();
 	   	HAL_Delay(200);
-	GPIO_InitArgument();	
-	
+	DETECT_InitArgument();
+  GPIO_InitArgument();	
+//		   	HAL_Delay(200);
+	LED_R_ON;
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

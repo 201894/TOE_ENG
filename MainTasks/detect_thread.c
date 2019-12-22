@@ -9,18 +9,22 @@
  */
 
 #include "detect_thread.h"
+#include "kernal_thread.h"
+#include "bsp_can.h"
 #include "cmsis_os.h"
 #include "bsp_io.h"
 #include "freertos.h"
 #include "tim.h"
 #include "string.h"
+#include "tim.h"
 
-#define DETECT_THREAD_PERIOD 100
+#define DETECT_THREAD_PERIOD 			100
 UBaseType_t detect_stack_surplus;
-
 /* detect task global parameter */
 global_err_t g_err;
 global_fps_t g_fps[MaxId];
+global_fps_t r_fps[MaxId];
+extern GPIO_InitTypeDef GPIO_InitStr ;
 /* detect task static parameter */
 static offline_dev_t offline_dev[CAN_STIR_M1_OFFLINE + 1];
 /**
@@ -34,26 +38,26 @@ void detector_init(void)
 	 g_err.list[BOTTOM_DEVICE].enable = 0;
 
 	 /* initialize device error type and offline timeout value */
-	 for (uint8_t i = CAN_JUDGE_OFFLINE; i < ERROR_LIST_LENGTH; i++)
+	 for (uint8_t i = UART_DEBUS_OFFLINE; i < ERROR_LIST_LENGTH; i++)
 	 {		  
-	  if (i <= CAN_STIR_M1_OFFLINE)
-		{
-		  offline_dev[i].set_timeout = 200; //ms
-		  offline_dev[i].last_time   = 0;
-		  offline_dev[i].delta_time  = 0;		  
-		  g_err.list[i].dev  = &offline_dev[i];
-		  g_err.list[i].type = DEV_OFFLINE;
-		}
-		else if (i == BULLET_JAM)
-		{
-		  g_err.list[i].dev  = NULL;
-		  g_err.list[i].type = DEV_RUNNING_ERR;
-		}
-		else if (i <= GIMBAL_CONFIG_ERR)
-		{
-		  g_err.list[i].dev  = NULL;
-		  g_err.list[i].type = SYS_CONFIG_ERR;
-		}
+			if (i <= CAN_STIR_M1_OFFLINE)
+			{
+				offline_dev[i].set_timeout = 200; //ms
+				offline_dev[i].last_time   = 0;
+				offline_dev[i].delta_time  = 0;		  
+				g_err.list[i].dev  = &offline_dev[i];
+				g_err.list[i].type = DEV_OFFLINE;
+			}
+			else if (i == BULLET_JAM)
+			{
+				g_err.list[i].dev  = NULL;
+				g_err.list[i].type = DEV_RUNNING_ERR;
+			}
+			else if (i <= GIMBAL_CONFIG_ERR)
+			{
+				g_err.list[i].dev  = NULL;
+				g_err.list[i].type = SYS_CONFIG_ERR;
+			}
 	 }
 		
 	  /* initialize device error detect priority and enable byte */
@@ -61,45 +65,45 @@ void detector_init(void)
 	  g_err.list[UART_DEBUS_OFFLINE].pri        = 11;
 	  g_err.list[UART_DEBUS_OFFLINE].enable     = 1;
 	 
-	  g_err.list[CAN_STIR_M1_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_STIR_M1_OFFLINE].pri        = 1;
-	  g_err.list[CAN_STIR_M1_OFFLINE].enable     = 1;
+//	  g_err.list[CAN_STIR_M1_OFFLINE].err_exist  = 0;
+//	  g_err.list[CAN_STIR_M1_OFFLINE].pri        = 1;
+//	  g_err.list[CAN_STIR_M1_OFFLINE].enable     = 1;
 	  
-	  g_err.list[CAN_CHASSIS_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_CHASSIS_OFFLINE].pri        = 2;
-	  g_err.list[CAN_CHASSIS_OFFLINE].enable     = 1;
+//	  g_err.list[CAN_CHASSIS_OFFLINE].err_exist  = 0;
+//	  g_err.list[CAN_CHASSIS_OFFLINE].pri        = 2;
+//	  g_err.list[CAN_CHASSIS_OFFLINE].enable     = 1;
 	  
-	  g_err.list[CAN_FRIC_M1_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_FRIC_M1_OFFLINE].pri        = 3;
-	  g_err.list[CAN_FRIC_M1_OFFLINE].enable     = 1;
+////	  g_err.list[CAN_FRIC_M1_OFFLINE].err_exist  = 0;
+////	  g_err.list[CAN_FRIC_M1_OFFLINE].pri        = 3;
+////	  g_err.list[CAN_FRIC_M1_OFFLINE].enable     = 1;
 
-	  g_err.list[CAN_PIT_IMU_OFFLINE].err_exist = 0;
-	  g_err.list[CAN_PIT_IMU_OFFLINE].pri       = 4;
-	  g_err.list[CAN_PIT_IMU_OFFLINE].enable    = 1;
-	  
-	  g_err.list[CAN_YAW_IMU_OFFLINE].err_exist = 0;
-	  g_err.list[CAN_YAW_IMU_OFFLINE].pri          = 5;  //max priority
-	  g_err.list[CAN_YAW_IMU_OFFLINE].enable    = 1;
+////	  g_err.list[CAN_PIT_IMU_OFFLINE].err_exist = 0;
+////	  g_err.list[CAN_PIT_IMU_OFFLINE].pri       = 4;
+////	  g_err.list[CAN_PIT_IMU_OFFLINE].enable    = 1;
+////	  
+////	  g_err.list[CAN_YAW_IMU_OFFLINE].err_exist = 0;
+////	  g_err.list[CAN_YAW_IMU_OFFLINE].pri          = 5;  //max priority
+////	  g_err.list[CAN_YAW_IMU_OFFLINE].enable    = 1;
 
-	  g_err.list[CAN_PIT_M1_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_PIT_M1_OFFLINE].pri        = 6;
-	  g_err.list[CAN_PIT_M1_OFFLINE].enable     = 1;
-	  
-	  g_err.list[CAN_YAW_M1_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_YAW_M1_OFFLINE].pri        = 7;
-	  g_err.list[CAN_YAW_M1_OFFLINE].enable     = 1;
-	  
-	  g_err.list[CAN_COMMU_OFFLINE].err_exist  = 0;
-	  g_err.list[CAN_COMMU_OFFLINE].pri        = 8;
-	  g_err.list[CAN_COMMU_OFFLINE].enable     = 1;
+////	  g_err.list[CAN_PIT_M1_OFFLINE].err_exist  = 0;
+////	  g_err.list[CAN_PIT_M1_OFFLINE].pri        = 6;
+////	  g_err.list[CAN_PIT_M1_OFFLINE].enable     = 1;
+////	  
+////	  g_err.list[CAN_YAW_M1_OFFLINE].err_exist  = 0;
+////	  g_err.list[CAN_YAW_M1_OFFLINE].pri        = 7;
+////	  g_err.list[CAN_YAW_M1_OFFLINE].enable     = 1;
+////	  
+////	  g_err.list[CAN_COMMU_OFFLINE].err_exist  = 0;
+////	  g_err.list[CAN_COMMU_OFFLINE].pri        = 8;
+////	  g_err.list[CAN_COMMU_OFFLINE].enable     = 1;
 
-	  g_err.list[CAN_JUDGE_OFFLINE].err_exist = 0;
-	  g_err.list[CAN_JUDGE_OFFLINE].pri       = 9;
-	  g_err.list[CAN_JUDGE_OFFLINE].enable    = 1;
-	  
-	  g_err.list[UART_NUC_OFFLINE].err_exist    = 0;
-	  g_err.list[UART_NUC_OFFLINE].pri          = 10;
-	  g_err.list[UART_NUC_OFFLINE].enable       = 1;
+////	  g_err.list[CAN_JUDGE_OFFLINE].err_exist = 0;
+////	  g_err.list[CAN_JUDGE_OFFLINE].pri       = 9;
+////	  g_err.list[CAN_JUDGE_OFFLINE].enable    = 1;
+////	  
+////	  g_err.list[UART_NUC_OFFLINE].err_exist    = 0;
+////	  g_err.list[UART_NUC_OFFLINE].pri          = 10;
+////	  g_err.list[UART_NUC_OFFLINE].enable       = 1;
 }  
 /**
   * @brief     record the detected module return time to judge offline
@@ -117,7 +121,6 @@ void DETECT_InitArgument(void)
 {
   detector_init();
   g_err.beep_ctrl = 0;  
-  led_init;
 }
 
 /**
@@ -139,21 +142,29 @@ void detect_thread(void const *argu)
     detect_time_ms = HAL_GetTick() - detect_time_last;
     detect_time_last = HAL_GetTick();
     
-    /* module offline detect */
+/* module offline detect */
     module_offline_detect();
     if (g_err.err_now != NULL)
     {
-      LED_R_OFF;
+   	  LED_G_OFF;		 // WHY£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿£¿			
+			HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);			
+			TIM12_ARR = 1600 + 200 * g_err.beep_ctrl;
+		  __HAL_TIM_SET_AUTORELOAD(&htim12,TIM12_ARR);			
       module_offline_callback();
     }
     else
     {
-      g_err.beep_ctrl = 0;
-      LED_G_ON;
+				g_err.beep_ctrl = 0;
+				HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_1);			
+        LED_G_ON;
+  			LED_R_OFF;	
     }
-
+/* fps detect and clear */		
     module_fps_detect();
     module_fps_clear();
+/* Solve massage send */			
+//		slove_ms_send(kernal_ctrl.global_mode);
+		
    // detect_stack_surplus = uxTaskGetStackHighWaterMark(NULL);    
     osDelayUntil(&detect_wake_time, DETECT_THREAD_PERIOD);
   }
@@ -163,7 +174,7 @@ static void module_offline_detect(void)
 {
   int max_priority = 0;
   int err_cnt      = 0;
-  for (uint8_t id = CAN_JUDGE_OFFLINE; id <= CAN_STIR_M1_OFFLINE; id++)
+  for (uint8_t id = UART_DEBUS_OFFLINE; id <= CAN_STIR_M1_OFFLINE; id++)
   {
     g_err.list[id].dev->delta_time = HAL_GetTick() - g_err.list[id].dev->last_time;
     if (g_err.list[id].enable 
@@ -195,41 +206,35 @@ static void module_offline_detect(void)
 static void module_offline_callback(void)
 {
     g_err.err_count++;
-    if (g_err.err_count > 60)
+    if (g_err.err_count > 20)
     g_err.err_count = 0;
-
+    if (g_err.err_count%2 == 1) 
+		{
+				for(int i; i < g_err.beep_ctrl; i++){			
+					flow_led_tog(i);
+					LED_R_TOG;
+				}
+		}			
   switch (g_err.err_now_id)
   {
     case UART_DEBUS_OFFLINE:
 //    case UART_NUC_OFFLINE:			
     {
+         g_err.beep_ctrl = 1; 
       if (g_err.err_count == 1)
-      {
-        LED_R_ON;        
-				__HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,400);	
-      }
+		   __HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,400);	
       else
-      {
-				__HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,0);	
-        LED_R_OFF;
-        g_err.beep_ctrl = 0;
-      }
+		   __HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,0);			  
     }break;
     
     case CAN_CHASSIS_OFFLINE:
     {
-      if (g_err.err_count == 1
-          || g_err.err_count == 7)
-      {
-        LED_R_ON;
-        g_err.beep_ctrl = g_err.beep_tune/2;
-				__HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,400);
-      }
-      else
-      {
-        LED_R_OFF;
-        g_err.beep_ctrl = 0;
-      }
+        g_err.beep_ctrl = 2;
+				if (g_err.err_count == 1
+						|| g_err.err_count == 3)
+					__HAL_TIM_SET_COMPARE(&htim12 ,TIM_CHANNEL_1,400);
+				else
+					__HAL_TIM_SET_COMPARE(&htim12,TIM_CHANNEL_1,0);		
     }break;
     
 //    case CAN_SLIP_OFFLINE:
@@ -266,8 +271,7 @@ static void module_offline_callback(void)
 //        g_err.beep_ctrl = 0;
 //      }
 //    }break;
-    
-    
+       
     default:
     {
       LED_R_ON;
@@ -275,6 +279,21 @@ static void module_offline_callback(void)
     }break;
   }
 }
+
+
+void slove_ms_send(uint8_t mode, float targrt_angle)
+{
+	
+	uint8_t  canTxData[8];
+	data4bytes.f = targrt_angle;
+	canTxData[0] =  mode;		
+	canTxData[1] =  data4bytes.c[0];
+	canTxData[2] =  data4bytes.c[1];
+	canTxData[3] =  data4bytes.c[2];
+	canTxData[4] =  data4bytes.c[3];	
+  send_can2_ms(CAN_SEND_M1_ID,canTxData);		
+}
+
 
 static void module_fps_detect(void)
 {
@@ -288,6 +307,7 @@ static void module_fps_clear(void)
 {
 	  for (int i = 0; i < MaxId; i++)
 		{
+			memcpy(&r_fps[i], &g_fps[i], sizeof(global_fps_t));					
 			memset(&g_fps[i], 0, sizeof(global_fps_t));		
 		}
 }

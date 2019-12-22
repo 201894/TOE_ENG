@@ -21,7 +21,9 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
+#include "string.h"
 uint32_t TIM12_ARR = 1200;
+GPIO_InitTypeDef GPIO_InitStr = {0};
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim3;
@@ -66,9 +68,9 @@ void MX_TIM12_Init(void)
   TIM_OC_InitTypeDef sConfigOC = {0};
 
   htim12.Instance = TIM12;
-  htim12.Init.Prescaler = 0;
+  htim12.Init.Prescaler = 83;
   htim12.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim12.Init.Period = 0;
+  htim12.Init.Period = TIM12_ARR;
   htim12.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim12.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim12) != HAL_OK)
@@ -155,7 +157,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
     HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
   /* USER CODE BEGIN TIM12_MspPostInit 1 */
-
+			memcpy(&GPIO_InitStr, &GPIO_InitStruct, sizeof(GPIO_InitTypeDef));
   /* USER CODE END TIM12_MspPostInit 1 */
   }
 

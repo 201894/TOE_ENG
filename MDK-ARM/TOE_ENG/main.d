@@ -64,3 +64,4 @@ toe_eng\main.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\main.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\main.o: ..\UserBsp\bsp_io.h
 toe_eng\main.o: ..\MainTasks\kernal_thread.h
+toe_eng\main.o: ..\MainTasks\detect_thread.h

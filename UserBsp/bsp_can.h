@@ -3,7 +3,7 @@
  *  @version 4.0
  *  @date  June 2019
  *
- *  @brief receive external can device message
+ *  @brief receive external can device message 
  *
  */
 
@@ -22,10 +22,12 @@ typedef enum
 
 typedef enum
 {  
-	MotoStir     = 0,	
-  MotoPit      = 1,  //
-  MotoYaw    = 2,	 	
-	CGLink       = 3,  	
+	MotoStir  = 0,	
+  MotoPit  = 1,  //
+  MotoYaw  = 2,	
+	CGLink  = 3,  
+	MotoLUpLft  = 4,
+	MotoRUpLft = 5,
 }GimbalModule_ID;
 
 typedef enum
@@ -35,42 +37,35 @@ typedef enum
   MotoLeftDown     		= 2,	 	
 	MotoRightDown 		  = 3,
   MotoMidUp     		      = 4,	 	
-	MotoMidDown 		      = 5,	
-	MotoNumber             = 6,
+	MotoMidDown 		      = 5,
+  MotoLeftUpLift     		= 6,	 	
+	MotoRightUpLift 		  = 7,	
+	MotoNumber           = 6,
+	
 	MaxId                        = 20,		
 }ChassisModule_ID;
 
 typedef enum
 {
-	LinkNormal     = 0,		
-	StirNormal      = 1,
-  YawNormal      = 2, //
-  YawVision      = 3,	 	
-  PitNormal      = 4,  //
-  PitVision      = 5,	 	
+	LinkECD     = 0,		
+	StirECD      = 1,
+	LiftECD      = 2,
+  YawIMU      = 3, //
+  YawVIS      = 4,	 	
+  PitECD     = 5,  //
+  PitVIS      = 6,	 	
 }GimbalModuleCtrl_ID;
 
 typedef enum
 {
-  CAN_3508_M1_ID           = 0x201,
-  CAN_3508_M2_ID           = 0x202,
-  CAN_3508_M3_ID           = 0x203,
-  CAN_3508_M4_ID           = 0x204,
-  CAN_3508_M5_ID           = 0x205,
-  CAN_3508_M6_ID           = 0x206,
-	CAN_SLAVE_M1_ID          = 0x311,
-	CAN_SLAVE_M2_ID          = 0x312,	
-	CAN_SEND_M1_ID           = 0x301,
-	CAN_SEND_M2_ID           = 0x302,	
-} can_msg_id2;
-
-typedef enum
-{
-  CAN_STIR_ID              		= 0x201,		
-  CAN_3508_FL_ID            = 0x202,
-  CAN_3508_FR_ID            = 0x203,
-	CAN_PIT_ID               			 = 0x205,
-  CAN_YAW_ID              		 = 0x206, 
+  CAN_UPLIFT_M1_ID        = 0x201,  //
+  CAN_UPLIFT_M2_ID        = 0x202,		
+  CAN_3508_M1_ID           = 0x203,
+  CAN_3508_M2_ID           = 0x204,
+  CAN_3508_M3_ID           = 0x205,
+  CAN_3508_M4_ID           = 0x206,
+  CAN_3508_M5_ID           = 0x207,
+  CAN_3508_M6_ID           = 0x208,
   EXT_GAME_STATE         = 0x101,
   EXT_ROBOT_STATE       = 0x102,	
   EXT_POWER_DATA        = 0x103,
@@ -80,6 +75,19 @@ typedef enum
   EXT_BUFF_MUSK            = 0x107,
   EXT_ROBOT_HURT           = 0x111,
   EXT_SHOOT_DATA           = 0x112,		
+} can_msg_id2;
+
+typedef enum
+{
+  CAN_STIR_ID              		= 0x204,		
+  CAN_3508_FL_ID            = 0x207,
+  CAN_3508_FR_ID            = 0x208,
+	CAN_PIT_ID               		 = 0x205,
+  CAN_YAW_ID              		 = 0x206, 
+	CAN_SLAVE_M1_ID         = 0x311,
+	CAN_SLAVE_M2_ID          = 0x312,	
+	CAN_SEND_M1_ID           = 0x301,
+	CAN_SEND_M2_ID           = 0x302,		
 } can_msg_id1;
 
 typedef union
@@ -279,7 +287,7 @@ typedef __packed struct
 
 
 extern  moto_param  moto_fric[2];
-extern	moto_param  moto_chassis[6];
+extern	moto_param  moto_chassis[8];
 extern  moto_param  moto_gimbal[3];
 extern  wl4data     data4bytes;
 
@@ -294,8 +302,7 @@ extern ext_robot_hurt_t                 ext_robot_hurt;
 void can_device_init(void);
 void can_receive_start(void);
 void CAN_InitArgument(void);
-void send_gimbal_ms(uint32_t id,uint8_t data[8]);
-void send_chassis_ms(uint32_t id,uint8_t data[8]);
+void send_can2_ms(uint32_t id,uint8_t data[8]);
 void encoder_data_handle(moto_param* ptr,uint8_t RxData[8]);
 void gyro_data_handle(wl2data* ptr,wl4data* ptrr,gyro_param* gyro,uint8_t RxData[8]);
 void send_gimbal_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);   //CAN 1

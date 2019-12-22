@@ -27,13 +27,14 @@ void uart1_device_init(void);
 void uart7_device_init(void);
 void uart6_device_init(void);
 
-void USER_DMA_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma, uint8_t *Buffer_Adress, uint8_t Buffer_Len);
+void USER_DMA_INIT(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma, uint8_t *bufferAdress, uint8_t bufferLen);
 void USART_InitArgument(void);
 void uart_receive_handler(UART_HandleTypeDef *huart);
-void 	UART_RX_IDLE_IRQ(UART_HandleTypeDef *huart);
-uint8_t dma_current_memory_target(DMA_Stream_TypeDef *dma_stream);
-uint16_t dma_current_data_counter(DMA_Stream_TypeDef *dma_stream);
 void UART_RX_IDLE_IRQ(UART_HandleTypeDef *huart);
-
+void USART_SendChar(unsigned char ch,USART_TypeDef * USART);
+//uint8_t dma_current_memory_target(DMA_Stream_TypeDef *dma_stream);
+//uint16_t dma_current_data_counter(DMA_Stream_TypeDef *dma_stream);
+//void UART_RX_IDLE_IRQ(UART_HandleTypeDef *huart);
 extern  uint8_t pc_buf[50],bt_buf[50];
+
 #endif

@@ -34,6 +34,7 @@ toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 toe_eng\detect_thread.o: ..\UserBsp\bsp_can.h
+toe_eng\detect_thread.o: ..\MainTasks\kernal_thread.h
 toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 toe_eng\detect_thread.o: ../Inc/FreeRTOSConfig.h

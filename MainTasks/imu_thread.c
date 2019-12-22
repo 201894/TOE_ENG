@@ -11,7 +11,6 @@
 #include "imu_thread.h"
 #include "cmsis_os.h"
 #include "detect_thread.h"
-
 #include <string.h>
 #include "math.h"
 #include "stdio.h"

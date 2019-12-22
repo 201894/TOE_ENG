@@ -28,8 +28,9 @@ typedef enum
 	 IMU,
 	 COMMU,
 	 GYROY,
-	 GYROP,
- 
+	 GYROP, 
+	 LUP,
+	 RUP,
 }module_fps_e;
 
 typedef enum
@@ -38,7 +39,7 @@ typedef enum
   UART_DEBUS_OFFLINE 	  			  = 1,	  
   UART_NUC_OFFLINE 	  					  = 2,	
   CAN_JUDGE_OFFLINE  					  = 3,	
-  CAN_COMMU_OFFLINE 	  	= 4,		
+  CAN_COMMU_OFFLINE 	  	      = 4,		
   CAN_YAW_M1_OFFLINE  					= 5,
   CAN_PIT_M1_OFFLINE 	  					= 6,
   CAN_YAW_IMU_OFFLINE  				= 7,
@@ -46,10 +47,12 @@ typedef enum
   CAN_FRIC_M1_OFFLINE    				= 9,
   CAN_CHASSIS_OFFLINE    	      = 10,	
   CAN_STIR_M1_OFFLINE          	= 11,  
-  BULLET_JAM               							= 12,
-  CHASSIS_CONFIG_ERR   		 			= 13,
-  GIMBAL_CONFIG_ERR   	 					= 14,
-  ERROR_LIST_LENGTH    					= 15,
+	CAN_UPLIFT_LEFT_OFFLINE   = 12,
+	CAN_UPLIFT_RIGHT_OFFLINE = 13,
+  BULLET_JAM               							= 14,
+  CHASSIS_CONFIG_ERR   		 			= 15,
+  GIMBAL_CONFIG_ERR   	 					= 16,
+  ERROR_LIST_LENGTH    					= 17,
 } err_id_e;
 
 typedef enum
@@ -104,8 +107,11 @@ typedef struct
 
 extern global_err_t g_err;
 extern global_fps_t g_fps[MaxId];
+extern global_fps_t r_fps[MaxId];
 void detector_init(void);
+
 void err_detector_hook(int err_id);
+void slove_ms_send(uint8_t mode, float targrt_angle);
 void DETECT_InitArgument(void);
 static void module_offline_callback(void);
 static void module_offline_detect(void);

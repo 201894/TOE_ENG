@@ -37,3 +37,8 @@ toe_eng\stmgood.o: ..\UserBsp\bsp_uart.h
 toe_eng\stmgood.o: ../Inc/usart.h
 toe_eng\stmgood.o: ../Inc/main.h
 toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\stmgood.o: ..\MainTasks\chassis_thread.h
+toe_eng\stmgood.o: ..\DeCode\DR16_decode.h
+toe_eng\stmgood.o: ..\RmLib\RMsystem.h
+toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
+toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h

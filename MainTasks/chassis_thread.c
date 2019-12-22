@@ -9,18 +9,20 @@
  
 
 #include "chassis_thread.h"
+#include "detect_thread.h"
+#include "kernal_thread.h"
 #include "cmsis_os.h"
 #include "bsp_can.h"
 #include "STMGood.h"
 #include "pid.h"
 #include "string.h"
 #include "math.h"
-
-#define CHASSIS_THREAD_PERIOD 	5
+#include "bsp_io.h"
+#define CHASSIS_THREAD_PERIOD 	  2
 #define GIMBAL_POSITION_RATIO		 	2.0f
 #define GIMBAL_MIDDLE_ANGLE   		100.0f
-#define GIMBAL_MIDDLE_ECD     			4000
-#define NORMAL_PARAM						12.12f
+#define GIMBAL_MIDDLE_ECD     			 4000
+#define NORMAL_PARAM						       12.12f
 /*扭腰模式相关参数*/
 /* 单位时间模式    扭腰周期 */
 #define GORGI_PERIOD                       1600
@@ -28,6 +30,9 @@
 #define GORGI_GM_ANGLE                 40.0f
 
 #define GORGI_GM_OFFSET                8.0f
+/*reduction ratio of moto 3508 19/1*/
+#define C620_RATIO      (19/1)
+
 chassis_t chassis;
 
 void chassis_pid_init(void)
@@ -35,11 +40,15 @@ void chassis_pid_init(void)
 	for(int i=0;i<6;i++)
 	{
 	  memset(&moto_chassis[i],0,sizeof(moto_param));
-	  PID_struct_init(&pid_chassis[i],6000,15000,0,0,0);              //          
+	  PID_struct_init(&pid_chassis[i],6000,15000,7,0.1,0);              //          
 	} 
 	
-	PID_struct_init(&pid_out[CGLink],0,0,0,0,0);  
-  PID_struct_init(&pid_in[LinkNormal],0,0,0,0,0);  
+	PID_struct_init(&pid_out[LinkECD],0,0,0,0,0); 	
+  PID_struct_init(&pid_in[CGLink],0,0,0,0,0);  
+
+	PID_struct_init(&pid_out[LiftECD],0,0,0,0,0); 	
+  PID_struct_init(&pid_in[MotoLUpLft],0,0,0,0,0);
+  PID_struct_init(&pid_in[MotoRUpLft],0,0,0,0,0);	
 }
 
 void chassis_thread(void const * argument)
@@ -51,23 +60,41 @@ void chassis_thread(void const * argument)
   {
 			ChassisHandleLastWakeTime = xTaskGetTickCount();		
 			taskENTER_CRITICAL();
-			
+		
+				for(int i=0;i<6;i++)
+				{
+					PID_struct_init(&pid_chassis[i],6000,15000,7,0.1,0);              //          
+				}								
 				chassis_link_handle();
 				for(int i = MotoLeftUp; i < MotoNumber; i++)
 				{
 					pid_ast(&pid_chassis[i],chassis.target[i],moto_chassis[i].speed_rpm);
-					chassis.current [i] = (int16_t)pid_chassis[i].ctrOut;	
+					chassis.current[i] = (int16_t)pid_chassis[i].ctrOut;	
 				}
-				if(chassis.mode == CHASSIS_RELAX)
+#if 1				
+			PID_struct_init(&pid_out[LiftECD],3000,maxout1,_kp,_ki,_kd);  
+			PID_struct_init(&pid_in[MotoLUpLft],6000,15000,_kkp,_kki,_kkd);
+			PID_struct_init(&pid_in[MotoRUpLft],6000,15000,_kkp,_kki,_kkd);			
+#endif
+		/* 抬升电机 及 翻转电机 控制策略 ：		
+		    使用一个电机的外环输出值，作为内环控制的目标值
+		*/
+		/* 抬升电机PID控制    外环   理论目标位置           --        电机反馈位置  */				
+				pid_ast(&pid_out[LiftECD], chassis.targetPosition, (moto_chassis[MotoLeftUpLift].total_angle -moto_chassis[MotoLeftUpLift].offset_angle) / C620_RATIO);
+		/* 抬升电机PID控制    内环   外环输出量             --        电机反馈速度  */		
+				pid_ast(&pid_in[MotoLUpLft],pid_out[LiftECD].ctrOut,moto_chassis[MotoLeftUpLift].speed_rpm * SPD_RATIO); 
+				pid_ast(&pid_in[MotoRUpLft],-pid_out[LiftECD].ctrOut,moto_chassis[MotoRightUpLift].speed_rpm * SPD_RATIO);
+		/* 计算得 电机 闭环 电流值 发送    抬升电机 201 202   底盘电机 203 ~ 208 */						
+				if(chassis.can_send_flag == SET)
 				{
-						for(int i=0;i<6;i++)
-						{
-							memset(&moto_chassis[i],0,sizeof(moto_param));
-							PID_struct_init(&pid_chassis[i],6000,15000,0,0,0);              //          
-						}
+					send_chassis_cur(0x200,(int16_t)pid_in[MotoLUpLft].ctrOut,(int16_t)pid_in[MotoRUpLft].ctrOut,chassis.current[MotoLeftUp],chassis.current[MotoRightUp]);
+					send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],chassis.current[MotoMidUp],chassis.current[MotoMidDown]);
 				}
-				send_chassis_cur(0x200,chassis.current[MotoLeftUp],chassis.current[MotoRightUp],chassis.current[MotoLeftDown],chassis.current[MotoRightDown]);
-				send_chassis_cur(0x1ff,chassis.current[MotoMidUp],chassis.current[MotoMidDown],0,0);		
+				else
+				{
+					send_chassis_cur(0x200,0,0,0,0);
+					send_chassis_cur(0x1ff,0,0,0,0);				
+				}
 			taskEXIT_CRITICAL();
 			osDelayUntil(&ChassisHandleLastWakeTime,CHASSIS_THREAD_PERIOD);			
   }
@@ -96,13 +123,13 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 {
 
   /* the angle which is calculating by using the atan2 function between Vx and Vy */
-	static float atan_angle = 0.0f;
+	static float atan_angle = 0.0f; 
 	/* angle diff between gimbal and chassis */
-	static float diff_angle = 0.0f;
+	static float diff_angle = 0.0f; 
 	/* the merge spd by sqrt(Vx^2 + Vy^2) */
-	static float merge_spd = 0.0f;
+	static float merge_spd = 0.0f; 
 	
-		_chassis->vx = (_rc->ch1)*NORMAL_PARAM + _chassis->UpStairVx;	
+		_chassis->vx = (_rc->ch1)*NORMAL_PARAM + _chassis->upStairVx;	
 		_chassis->vy = (_rc->ch0)*NORMAL_PARAM; 
 		#ifndef   PID_LINKAGE
 		_chassis->vw = (_rc->ch2)*NORMAL_PARAM*1.2f;   	
@@ -137,12 +164,12 @@ static void chassis_link_handle(void)
 	                     /*目标角度，云台、底盘垂直时记录的yaw电机码盘值   yaw电机实时反馈的码盘值*/
 		pid_ast(&pid_out[CGLink],  GIMBAL_MIDDLE_ECD + chassis.CorgiAngle , moto_gimbal[MotoYaw].total_angle);
 												 /*外环输出量  底盘陀螺仪反馈绕Z轴旋转的角速度*/	
-		pid_ast(&pid_in[LinkNormal], pid_out[CGLink].ctrOut, 0);
+		pid_ast(&pid_in[LinkECD], pid_out[CGLink].ctrOut, 0);
 
 		chassis.vw =  pid_link_in.ctrOut;
 	
 	#endif
-	corgi_mode_ctrl(chassis.CorgiAngle,chassis.CorgiVw,chassis.CorgiMode);
+	corgi_mode_ctrl(chassis.corgiAngle,chassis.corgiVw,chassis.corgiMode);
 	chassis_algorithm(&rc,&chassis);
 }
 /**
@@ -159,21 +186,21 @@ static void corgi_mode_ctrl(int16_t Corgi_Angle, \
 	 {
 		 case CORGI_BY_TIME:
 		 {
-		    chassis.corgi_cnt ++;
-			  if((chassis.corgi_init_flag == 0)&&(chassis.corgi_cnt >= GORGI_PERIOD*0.5/CHASSIS_THREAD_PERIOD))
+		    chassis.corgiCnt ++;
+			  if((chassis.corgiInitFlag == 0)&&(chassis.corgiCnt >= GORGI_PERIOD*0.5/CHASSIS_THREAD_PERIOD))
 				{
 				  sRevolMax = 8000;
-					chassis.corgi_cnt = 0;	
-					chassis.corgi_init_flag = 1;
+					chassis.corgiCnt = 0;	
+					chassis.corgiInitFlag = 1;
 				}
 				else
 				{
-						if(chassis.corgi_cnt >= GORGI_PERIOD/CHASSIS_THREAD_PERIOD)
+						if(chassis.corgiCnt >= GORGI_PERIOD/CHASSIS_THREAD_PERIOD)
 						{
 							sRevolMax = 8000;
-							chassis.corgi_cnt = 0;
+							chassis.corgiCnt = 0;
 						}
-						else if (chassis.corgi_cnt == 0)
+						else if (chassis.corgiCnt == 0)
 						{
 							sRevolMax = -8000;
 						}		
@@ -182,17 +209,17 @@ static void corgi_mode_ctrl(int16_t Corgi_Angle, \
 		 /*  */
 		 case CORGI_BY_GM:
 		 {
-		   if(chassis.corgi_flag)
+		   if(chassis.corgiFlag)
 			 {
 			    Corgi_Angle = GORGI_GM_ANGLE;
 				  if (fabs(pid_out[CGLink].errNow) <= GORGI_GM_OFFSET)
-						chassis.corgi_flag	= !chassis.corgi_flag;		
+						chassis.corgiFlag	= !chassis.corgiFlag;		
 			 }
 			 else
 			 {
 			    Corgi_Angle = - GORGI_GM_ANGLE;	
 				  if (fabs(pid_out[CGLink].errNow) <= GORGI_GM_OFFSET)
-						chassis.corgi_flag	= !chassis.corgi_flag;					  
+						chassis.corgiFlag	= !chassis.corgiFlag;					  
 			 }
 		 }break;	
 		 		 
@@ -200,8 +227,8 @@ static void corgi_mode_ctrl(int16_t Corgi_Angle, \
 		 {
 				  sRevolMax = 0;
 			    Corgi_Angle = 0;
-					chassis.corgi_cnt = 0;				    
-					chassis.corgi_init_flag = 0;		 
+					chassis.corgiCnt = 0;				    
+					chassis.corgiInitFlag = 0;		 
 		 }break;			 
 	 }
   

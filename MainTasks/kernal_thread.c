@@ -11,6 +11,8 @@
 #include "kernal_thread.h"
 #include "cmsis_os.h"
 #include "bsp_can.h"
+#include "bsp_uart.h"
+#include "bsp_io.h"
 #include "STMGood.h"
 #include "km_handle.h"
 #include "chassis_thread.h"
@@ -44,19 +46,37 @@ void kernal_thread(void const * argument)
 
 static void get_main_ctrl_mode(void)
 {
+	
+	
     switch (rc.sw1)  
 		{
       case RC_DN:
       {
-        kernal_ctrl.global_mode = SAFETY_MODE;
+				switch (rc.sw2)  
+				{
+					case RC_DN:
+					{
+						kernal_ctrl.global_mode =  SAFETY_MODE;							
+					}break;		
+					case RC_MI:
+					{
+						kernal_ctrl.global_mode =  MANUAL_CTRL_MODE;		
+					}break;		
+					case RC_UP:
+					{
+						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;								
+					}break;	
+			    default:{			
+						kernal_ctrl.global_mode =  SAFETY_MODE;								
+			    }
+			    break;							
+				}												
       }break;				
       case RC_MI:
       {
-        kernal_ctrl.global_mode = MANUAL_CTRL_MODE;
       }break;		  		
       case RC_UP:
       {
-        kernal_ctrl.global_mode = SEMI_AUTO_MODE;
       }break;				
 		}
 }
@@ -75,29 +95,31 @@ static void get_chassis_mode(void)
       }break;		
       case SEMI_AUTO_MODE:
       {
-					chassis.mode = UPSTAIR_MODE;
+					chassis.mode = CHASSIS_STOP;  // 临时 模式
       }break;				
       case AUTO_CTRL_MODE:
       {
-
-      }break;					
+					
+      }break;		
 		}
 }
 static void chassis_mode_handle(void)
 {
+	
+	chassis.can_send_flag = SET; // CAN2 pid处理电流值发送标志位默认置 1
   switch (chassis.mode)
 	{
       case CHASSIS_RELAX:
       {
-
+					chassis.can_send_flag = RESET;  // CAN2 pid处理电流值发送标志位置 0
       }break;					
       case CHASSIS_STOP:
       {
-
+					
       }break;		
       case MANUAL_SEPARATE_GIMBAL:
       {
-
+				
       }break;		
       case MANUAL_FOLLOW_GIMBAL:
       {
@@ -117,11 +139,9 @@ static void chassis_mode_handle(void)
       }break;		
       case UPSTAIR_MODE:
       {
-					chassis.UpStairVx = 3000;
+					chassis.upStairVx = 3000;
       }break;					
 	}
-
-
 }
 static void kb_enable_hook(void)
 {
@@ -162,6 +182,39 @@ static void fric_speed_ctrl(void)
 	
 */	
 	
+}
+
+/*舵机控制函数*/
+static void servo_postion_ctrl(uint8_t flag)
+{
+	uint8_t dataSum;
+	uint8_t servoData[] = {0xFF,0xFF,0x01,0x07,0x03,0x1E,0,0,0,0,0xFF};
+	if(flag == 1)
+	{
+			servoData[6] =  0x3FF & 0XFF;
+			servoData[7] =  0x3FF >> 8;	
+			servoData[8] =  0x2FF & 0XFF;
+			servoData[9] =  0x2FF >> 8;			
+	}
+	else
+	{
+			servoData[6] =  0x00 & 0XFF;
+			servoData[7] =  0x00 >> 8;			
+			servoData[8] =  0x1FF & 0XFF;
+			servoData[9] =  0x1FF >> 8;					
+	}	
+	
+	for(int i = 2; i < 10; i++)
+	{
+			dataSum += servoData[i];
+	}
+	
+	servoData[10] = ~dataSum;
+	
+	for(int i = 0; i  < 11; i++)
+	{
+		USART_SendChar(servoData[i],USART6);
+	}
 }
 
 static void stir_freq_ctrl(void)

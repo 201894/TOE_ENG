@@ -48,6 +48,13 @@ toe_eng\kernal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queu
 toe_eng\kernal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\kernal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 toe_eng\kernal_thread.o: ..\UserBsp\bsp_can.h
+toe_eng\kernal_thread.o: ..\UserBsp\bsp_uart.h
+toe_eng\kernal_thread.o: ../Inc/usart.h
+toe_eng\kernal_thread.o: ../Inc/main.h
+toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+toe_eng\kernal_thread.o: ..\UserBsp\bsp_io.h
+toe_eng\kernal_thread.o: ../Inc/gpio.h
+toe_eng\kernal_thread.o: ../Inc/tim.h
 toe_eng\kernal_thread.o: ..\RmLib\STMGood.h
 toe_eng\kernal_thread.o: ..\RmLib\km_handle.h
 toe_eng\kernal_thread.o: ..\DeCode\DR16_decode.h

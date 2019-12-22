@@ -8,7 +8,7 @@
 #include "STMGood.h"
 #include "stm32f4xx_hal.h"
 #include "bsp_uart.h"
-
+#include "chassis_thread.h"
  //-----------------------------------头文件包含
  
 //-----------------------------------变量保护区（以下变量不能改变）
@@ -92,6 +92,7 @@ int cmd(char *Cmd,int n)
 	
 	return 0;
 }
+
 void multi1(int n)
 {
 	_kp= xx[1];
@@ -109,16 +110,18 @@ void multi2(int n)
 	printf("################\r\n");
 	printf("PI:%f II:%f DI:%f\r\n",_kkp,_kki,_kkd);		
 }
+
 void multi3(int n)
 {
-
+	maxout1 = xx[1];
+	maxout2  = xx[2];
    printf("################\r\n");
    printf("maxout1:%f maxout2:%f\r\n",maxout1,maxout2);
 }
+
 void multi4(int n)
 {
-     _kkd = (int)xx[2];	
-//	gimbal.target[0]  = xx[2];
+   chassis.targetPosition = xx[1];	
 }
 
 void multi5(int n)

@@ -11,8 +11,8 @@
 #include <string.h>
 #include <stdio.h>
 
-PID_Typedef pid_out[6]       ={0};//6020
-PID_Typedef pid_in[3]       ={0};//6020
+PID_Typedef pid_out[7]       ={0};//6020
+PID_Typedef pid_in[6]       ={0};//6020
 PID_Typedef pid_chassis[6]      ={0};//3508 x 6
 
 PID_Typedef pid_fric[2]              ={0};

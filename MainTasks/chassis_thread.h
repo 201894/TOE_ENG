@@ -38,17 +38,18 @@ typedef  struct
   float         							vy; // left/right
   float         							vw; // 
 	float         							angle;
-  float         							UpStairVx;	
-  float         							CorgiAngle;	
-	uint8_t                   corgi_init_flag;		
-	uint8_t                   corgi_flag;	
-	uint16_t                 corgi_cnt;
-  int16_t        						CorgiVw;
-  	
+  float         							upStairVx;	
+  float         							corgiAngle;	
+	float 											targetPosition;   // 抬升位置 (电机角度环目标)	
+	uint8_t               		can_send_flag;
+	uint8_t                   corgiInitFlag;		
+	uint8_t                   corgiFlag;	
+	uint16_t                 corgiCnt;
+  int16_t        						corgiVw;  	
   int16_t       						current[6];
   int16_t       						target[6];	
   chassis_mode_e		mode;
-	corgi_mode_e       CorgiMode;
+	corgi_mode_e       corgiMode;
 }chassis_t;
 
 static void chassis_link_handle(void);
