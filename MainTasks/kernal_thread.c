@@ -95,7 +95,7 @@ static void get_chassis_mode(void)
       }break;		
       case SEMI_AUTO_MODE:
       {
-					chassis.mode = CHASSIS_STOP;  // 临时 模式
+					chassis.mode = CHASSIS_STOP;  // 临时 模式 取弹模式 
       }break;				
       case AUTO_CTRL_MODE:
       {
@@ -103,6 +103,7 @@ static void get_chassis_mode(void)
       }break;		
 		}
 }
+
 static void chassis_mode_handle(void)
 {
 	

@@ -303,7 +303,8 @@ void can_device_init(void);
 void can_receive_start(void);
 void CAN_InitArgument(void);
 void send_can2_ms(uint32_t id,uint8_t data[8]);
-void encoder_data_handle(moto_param* ptr,uint8_t RxData[8]);
+void encoder_data_handle(moto_param* ptr,uint8_t RxData[8],uint8_t moto_type);
+void data_6020_handle(moto_param* ptr,uint8_t RxData[8]);
 void gyro_data_handle(wl2data* ptr,wl4data* ptrr,gyro_param* gyro,uint8_t RxData[8]);
 void send_gimbal_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);   //CAN 1
 void send_chassis_cur(uint32_t id,int16_t iq1, int16_t iq2, int16_t iq3, int16_t iq4);  //CAN 2

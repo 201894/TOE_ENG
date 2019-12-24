@@ -86,7 +86,7 @@ void GPIO_InitArgument(void)
 	LED_G_OFF;
 	vcc_out_init();
   HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);	
-	//busserCtrl(DURATION_PARAM,TUNE_LEN);
+//	busserCtrl(DURATION_PARAM,TUNE_LEN);
 //	HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_1);	
 }
 

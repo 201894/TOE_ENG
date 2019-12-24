@@ -156,7 +156,7 @@ void detect_thread(void const *argu)
     {
 				g_err.beep_ctrl = 0;
 				HAL_TIM_PWM_Stop(&htim12, TIM_CHANNEL_1);			
-        LED_G_ON;
+//        LED_G_ON;
   			LED_R_OFF;	
     }
 /* fps detect and clear */		

@@ -11,11 +11,29 @@
 #include <string.h>
 #include <stdio.h>
 
-PID_Typedef pid_out[7]       ={0};//6020
-PID_Typedef pid_in[6]       ={0};//6020
+PID_Typedef pid_out[7]       ={0};//  
+/*
+LinkECD     	= 0,		
+StirECD      	= 1,
+LiftECD      	= 2,
+YawIMU      	= 3, 
+YawVIS      	= 4,	 	
+PitECD     		= 5,  
+PitVIS     	 		= 6,	 	
+*/
+PID_Typedef pid_in[6]       ={0};// 
+/*
+MotoStir  				= 0,
+MotoPit  				= 1, 
+MotoYaw  			= 2,
+CGLink  				= 3, 
+MotoLUpLft  	= 4, 
+MotoRUpLft 	= 5, 
+*/
 PID_Typedef pid_chassis[6]      ={0};//3508 x 6
 
 PID_Typedef pid_fric[2]              ={0};
+
 /**
  * @brief Absolute PID algorithm
  * @param PID_AbsoluteType

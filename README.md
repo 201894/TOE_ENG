@@ -8,3 +8,9 @@ TOE_ENG
 4. 流水燈 ：   PG1~PG8
 5. 指示燈 ：   RED : PE11  GREEN : PF14
 6. MPU6500 ： PF6
+
+---------------------
+12.23
+1.Chassis and Lift pid over
+2.Detect and fps thread over
+3.Can Filiter over

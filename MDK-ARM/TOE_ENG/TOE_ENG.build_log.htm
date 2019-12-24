@@ -26,99 +26,7 @@ Project File Date:  12/18/2019
 
 <h2>Output:</h2>
 Build target 'TOE_ENG'
-compiling bsp_can.c...
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\UserBsp\bsp_can.c: 1 warning, 0 errors
-compiling bsp_uart.c...
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\UserBsp\bsp_uart.c: 1 warning, 0 errors
-compiling chassis_thread.c...
-..\MainTasks\chassis_thread.h(64): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\kernal_thread.h(43): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\chassis_thread.c(126): warning:  #177-D: variable "atan_angle" was declared but never referenced
-        static float atan_angle = 0.0f; 
-..\MainTasks\chassis_thread.c(128): warning:  #177-D: variable "diff_angle" was declared but never referenced
-        static float diff_angle = 0.0f; 
-..\MainTasks\chassis_thread.c(130): warning:  #177-D: variable "merge_spd" was declared but never referenced
-        static float merge_spd = 0.0f; 
-..\MainTasks\chassis_thread.c(181): warning:  #550-D: parameter "Corgi_Angle" was set but never used
-  static void corgi_mode_ctrl(int16_t Corgi_Angle, \
-..\MainTasks\chassis_thread.c(182): warning:  #550-D: parameter "sRevolMax" was set but never used
-                                          int16_t sRevolMax, \
-..\MainTasks\chassis_thread.c: 8 warnings, 0 errors
-compiling detect_thread.c...
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\kernal_thread.h(43): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\detect_thread.c: 2 warnings, 0 errors
-compiling gimbal_thread.c...
-..\MainTasks\gimbal_thread.h(46): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\kernal_thread.h(43): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\gimbal_thread.c(104): error:  #136: struct "<unnamed>" has no field "speed_rpmc"
-      pid_ast(&pid_in[MotoStir],pid_out[MotoStir].ctrOut, moto_gimbal[MotoStir].speed_rpmc);
-..\MainTasks\gimbal_thread.c(95): warning:  #177-D: function "gimbal_pid_handle" was declared but never referenced
-  static void gimbal_pid_handle(void)
-..\MainTasks\gimbal_thread.c(89): warning:  #177-D: function "gimbal_mode_switch" was declared but never referenced
-  static void gimbal_mode_switch(void)
-..\MainTasks\gimbal_thread.c: 5 warnings, 1 error
-compiling kernal_thread.c...
-..\MainTasks\kernal_thread.h(43): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\chassis_thread.h(64): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\gimbal_thread.h(46): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\kernal_thread.c(156): warning:  #177-D: function "fric_speed_ctrl" was declared but never referenced
-  static void fric_speed_ctrl(void)
-..\MainTasks\kernal_thread.c(220): warning:  #177-D: function "stir_freq_ctrl" was declared but never referenced
-  static void stir_freq_ctrl(void)
-..\MainTasks\kernal_thread.c(146): warning:  #177-D: function "kb_enable_hook" was declared but never referenced
-  static void kb_enable_hook(void)
-..\MainTasks\kernal_thread.c(188): warning:  #177-D: function "servo_postion_ctrl" was declared but never referenced
-  static void servo_postion_ctrl(uint8_t flag)
-..\MainTasks\kernal_thread.c: 7 warnings, 0 errors
-compiling imu_thread.c...
-..\MainTasks\imu_thread.h(34): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\imu_thread.c(210): warning:  #177-D: variable "hx" was declared but never referenced
-    float hx, hy, hz, bx, bz;
-..\MainTasks\imu_thread.c(210): warning:  #177-D: variable "hy" was declared but never referenced
-    float hx, hy, hz, bx, bz;
-..\MainTasks\imu_thread.c(210): warning:  #177-D: variable "hz" was declared but never referenced
-    float hx, hy, hz, bx, bz;
-..\MainTasks\imu_thread.c(297): warning:  #550-D: variable "imu_first" was set but never used
-        static float imulast,imunow,imu_first;
-..\MainTasks\imu_thread.c: 6 warnings, 0 errors
-compiling main.c...
-..\MainTasks\chassis_thread.h(64): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\kernal_thread.h(43): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-../Src/main.c: 3 warnings, 0 errors
-compiling freertos.c...
-..\MainTasks\detect_thread.h(120): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\gimbal_thread.h(46): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\MainTasks\chassis_thread.h(64): warning:  #1-D: last line of file ends without a newline
-  #endif
-../Src/freertos.c: 3 warnings, 0 errors
-"TOE_ENG\TOE_ENG.axf" - 1 Error(s), 36 Warning(s).
+"TOE_ENG\TOE_ENG.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -137,7 +45,6 @@ Package Vendor: ARM
 
    * Component: ARM::CMSIS:CORE:3.40.0
       Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
-Target not created.
 </pre>
 </body>
 </html>

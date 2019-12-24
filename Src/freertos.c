@@ -197,7 +197,8 @@ void debug_thread(void const * argument)
 #if 1
 		printf("##FPS REVENLENT : ##\r\n");		
 		printf("fps[STIR] = %d\r\n",r_fps[STIR].fps);
-//		printf("fps[YAW] = %d\r\n",r_fps[YAW].fps);
+		printf("fps[YAW] = %d\r\n",r_fps[YAW].fps);
+		printf("fps[PIT] = %d\r\n",r_fps[PIT].fps);		
 		printf("fps[FRIC] = %d\r\n",r_fps[FRIC].fps);		
 		printf("fps[CHASSIS] = %d\r\n",r_fps[CHASSIS].fps);    
 //		printf("fps[JUDGE] = %d\r\n",r_fps[JUDGE].fps);			
@@ -211,7 +212,7 @@ void debug_thread(void const * argument)
 //		printf("fps[GYROP] = %d\r\n",r_fps[GYROP].fps);					
 #endif
 		
-#if 1
+#if 0
 				printf("##RC REVENLENT : ##\r\n");		
 				printf("rc.ch0 = %d\r\n",rc.ch0);
 				printf("rc.ch1 = %d\r\n",rc.ch1);		
@@ -227,18 +228,24 @@ void debug_thread(void const * argument)
 				printf("key_code = %d\r\n",rc.kb.key_code);		
 #endif
 		 
-#if 0
-			printf("UPLIFT PID REVENLENT : ##\r\n");				
+#if 1
+			printf("# UPLIFT PID REVENLENT : #\r\n");				
 			printf("TargetAngle = %.2f\r\n",chassis.targetPosition);	
+			printf("Currentecd = %d\r\n",moto_chassis[MotoLeftUpLift].ecd);	
+			
 			printf("CurrentAngle = %.2f\r\n",moto_chassis[MotoLeftUpLift].total_angle);	
 			printf("AngleError = #%.2f\r\n",pid_out[LiftECD].errNow);	
 			printf("FirstCtrOut = %.2f\r\n",pid_out[LiftECD].ctrOut);				
-			printf("CurrentSpd = %df\r\n",moto_chassis[MotoLeftUpLift].speed_rpm);	 // MotoData[RightUpLift].speed_rpm
+			printf("CurrentSpd = %.2f\r\n",moto_chassis[MotoLeftUpLift].speed_rpm*0.2);	 // MotoData[RightUpLift].speed_rpm
+			printf("CurrentSpdRight = %.2f\r\n",moto_chassis[MotoRightUpLift].speed_rpm*0.2);	 // MotoData[RightUpLift].speed_rpm			
 			printf("SpdError = %.2f\r\n",pid_in[MotoLUpLft].errNow);			
 			printf("FinalCtrOut = %d\r\n",(int16_t)pid_in[MotoLUpLft].ctrOut);					
 			printf("RightFinalCtrOut = %d\r\n",(int16_t)pid_in[MotoRUpLft].ctrOut);					
 #endif		 
-
+    if (g_err.err_now == NULL)
+    {
+			LED_G_TOG;
+		}
 //			ledFlow(1600,8);
 		  osDelay(200);
   }

@@ -16,8 +16,13 @@
 #include <stdio.h>
 
 #define ENCODER_ANGLE_RATIO               (8192.0f/360.0f)
-#define REDUCTION_RATIO                   (36/1)
-#define pi                                 3.1415926
+#define pi                                                       3.1415926
+/*reduction ratio of moto 2006 36/1*/
+#define MOTO_2006                                      1
+#define REDUCTION_RATIO_2006                 (36/1)
+/*reduction ratio of moto 3508 19/1*/
+#define MOTO_3508                                       0
+#define REDUCTION_RATIO_3508                 (19/1)
 
 uint8_t TxData[8];
 CAN_TxHeaderTypeDef  CAN_TxHeader;
@@ -63,30 +68,30 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 	    case CAN_3508_FL_ID:  	
 	    case CAN_3508_FR_ID: 				
 	    {
-	      static uint8_t i;
-        i = Can1Header.StdId - CAN_3508_FL_ID;	
-        moto_fric[i].speed_rpm = (uint16_t)(RxData1[2] << 8 | RxData1[3]);
+//	      static uint8_t i;
+//        i = Can1Header.StdId - CAN_3508_FL_ID;	
+//        moto_fric[i].speed_rpm = (uint16_t)(RxData1[2] << 8 | RxData1[3]);
 				err_detector_hook(CAN_FRIC_M1_OFFLINE);
 				g_fps[FRIC].cnt ++;  
 	    }break; 
 /* Stir电机数据 */	 
 	    case CAN_STIR_ID:  
 	    {
-		 		encoder_data_handle(&moto_gimbal[MotoStir],RxData1);		
+		 		encoder_data_handle(&moto_gimbal[MotoStir],RxData1,MOTO_2006);		
 				err_detector_hook(CAN_STIR_M1_OFFLINE);
 				g_fps[STIR].cnt ++;				
 	    }break; 			
 /* Pitch 电机数据 */	 			
 	    case CAN_PIT_ID:  	
 	    {
-		 		encoder_data_handle(&moto_gimbal[MotoPit],RxData1);	
+		 		data_6020_handle(&moto_gimbal[MotoPit],RxData1);	
 				err_detector_hook(CAN_PIT_M1_OFFLINE);
 				g_fps[PIT].cnt ++;				
 	    }break; 	
 /* Yaw 电机数据 */	 			
 	    case CAN_YAW_ID: 				
 	    {
-		 		encoder_data_handle(&moto_gimbal[MotoYaw],RxData1);
+		 		data_6020_handle(&moto_gimbal[MotoYaw],RxData1);
 				err_detector_hook(CAN_YAW_M1_OFFLINE);
 				g_fps[YAW].cnt ++;				
 				
@@ -201,14 +206,14 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 /* 抬升电机相关*/			
 		  case CAN_UPLIFT_M1_ID:
 			{
-		 		encoder_data_handle(&moto_chassis[MotoLeftUpLift],RxData2);		
+		 		encoder_data_handle(&moto_chassis[MotoLeftUpLift],RxData2,MOTO_3508);		
 				err_detector_hook(CAN_UPLIFT_LEFT_OFFLINE);
 				g_fps[LUP].cnt ++;						
 			}break;								
 			
 	    case CAN_UPLIFT_M2_ID:
 			{
-		 		encoder_data_handle(&moto_chassis[MotoRightUpLift],RxData2);		
+		 		encoder_data_handle(&moto_chassis[MotoRightUpLift],RxData2,MOTO_3508);		
 				err_detector_hook(CAN_UPLIFT_RIGHT_OFFLINE);
 				g_fps[RUP].cnt ++;					
 			}break;					
@@ -251,7 +256,26 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
   * @attention this function should be called after get_moto_offset() function
   */
 
-void encoder_data_handle(moto_param* ptr,uint8_t RxData[8])
+void data_6020_handle(moto_param* ptr,uint8_t RxData[8])
+{
+     ptr->last_ecd = ptr->ecd;
+		 ptr->ecd      = (uint16_t)(RxData[0] << 8 | RxData[1]);  
+		 if (ptr->ecd - ptr->last_ecd > 4096)
+		 {
+			 ptr->round_cnt--;
+		 }
+		 else if (ptr->ecd - ptr->last_ecd < -4096)
+		 {
+			 ptr->round_cnt++;
+		 }
+		 ptr->total_ecd = ptr->round_cnt * 8192 + ptr->ecd;
+		 /* total angle, unit is degree */
+		 ptr->total_angle = ptr->total_ecd / ENCODER_ANGLE_RATIO; 
+		 ptr->speed_rpm     = (int16_t)(RxData[2] << 8 | RxData[3]);
+		 ptr->current = (int16_t)(RxData[2] << 8 | RxData[3]);
+}
+
+void encoder_data_handle(moto_param* ptr,uint8_t RxData[8],uint8_t moto_type)
 {
    ptr->last_ecd = ptr->ecd;
 	 if(ptr->init_flag == 0)
@@ -259,7 +283,8 @@ void encoder_data_handle(moto_param* ptr,uint8_t RxData[8])
 		 ptr->init_flag = 1;
 		 ptr->round_cnt = 0;		 
 	   ptr->offset_ecd = (uint16_t)(RxData[0] << 8 | RxData[1]);  
-	   ptr->offset_angle = ptr->offset_ecd/ENCODER_ANGLE_RATIO;  		 
+		 if(ptr->offset_ecd > 4096)
+			 ptr->round_cnt ++;			 
 	 }
 	 else
 	 {
@@ -274,7 +299,10 @@ void encoder_data_handle(moto_param* ptr,uint8_t RxData[8])
 		 }
 		 ptr->total_ecd = ptr->round_cnt * 8192 + ptr->ecd - ptr->offset_ecd;
 		 /* total angle, unit is degree */
-		 ptr->total_angle = ptr->total_ecd / ENCODER_ANGLE_RATIO; 
+		 if(moto_type == MOTO_3508)
+			ptr->total_angle = ptr->total_ecd/ (ENCODER_ANGLE_RATIO*REDUCTION_RATIO_3508); 
+		 if(moto_type == MOTO_2006)
+			ptr->total_angle = ptr->total_ecd/  (ENCODER_ANGLE_RATIO*REDUCTION_RATIO_2006); 		 
 		 ptr->speed_rpm     = (int16_t)(RxData[2] << 8 | RxData[3]);
 		 ptr->current = (int16_t)(RxData[2] << 8 | RxData[3]);
 	 }
@@ -367,22 +395,8 @@ void send_can2_ms(uint32_t id,uint8_t data[8])
 
 void can_device_init(void)
 {
-  //can1 &can2 use same filter config
+  //can1  filter config
   CAN_FilterTypeDef  can_filter;
-	
-  can_filter.FilterActivation     = ENABLE;
-  can_filter.FilterBank           = 14U;
-  can_filter.FilterIdHigh         = 0x0000;
-  can_filter.FilterIdLow          = 0x0000;
-  can_filter.FilterMaskIdHigh     = 0x0000;
-  can_filter.FilterMaskIdLow      = 0x0000;
-  can_filter.FilterFIFOAssignment = CAN_FilterFIFO0;
-  can_filter.FilterMode           = CAN_FILTERMODE_IDMASK;
-  can_filter.FilterScale          = CAN_FILTERSCALE_32BIT;
-  can_filter.SlaveStartFilterBank = 14;
-  HAL_CAN_ConfigFilter(&hcan2, &can_filter);
-  //while (HAL_CAN_ConfigFilter(&hcan1, &can_filter) != HAL_OK);
-  /* Filter 1 : Four ID */
   can_filter.FilterActivation     = ENABLE;	
   can_filter.FilterBank         	= 0U;
 	can_filter.FilterMode 					= CAN_FILTERMODE_IDLIST;//列表模式
@@ -403,7 +417,22 @@ void can_device_init(void)
 	can_filter.FilterIdLow 					= ((uint16_t)CAN_SLAVE_M1_ID)<<5;
 	can_filter.FilterMaskIdHigh 		= ((uint16_t)CAN_SLAVE_M2_ID)<<5;
 	can_filter.FilterMaskIdLow 			= ((uint16_t)0)<<5;		
-  HAL_CAN_ConfigFilter(&hcan1, &can_filter);		
+  HAL_CAN_ConfigFilter(&hcan1, &can_filter);
+  //can2  filter config	
+  can_filter.FilterActivation     = ENABLE;
+  can_filter.FilterBank         	= 14U;
+  can_filter.FilterIdHigh         = 0x0000;
+  can_filter.FilterIdLow          = 0x0000;
+  can_filter.FilterMaskIdHigh     = 0x0000;
+  can_filter.FilterMaskIdLow      = 0x0000;
+  can_filter.FilterFIFOAssignment = CAN_FilterFIFO0;
+  can_filter.FilterMode           = CAN_FILTERMODE_IDMASK;
+  can_filter.FilterScale          = CAN_FILTERSCALE_32BIT;
+  can_filter.SlaveStartFilterBank = 14;
+  HAL_CAN_ConfigFilter(&hcan2, &can_filter);		
+  //while (HAL_CAN_ConfigFilter(&hcan1, &can_filter) != HAL_OK);
+  /* Filter 1 : Four ID */
+
 }
 
 void can_receive_start(void)

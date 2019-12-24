@@ -18,20 +18,42 @@
 #include "string.h"
 #include "math.h"
 #include "bsp_io.h"
-#define CHASSIS_THREAD_PERIOD 	  2
-#define GIMBAL_POSITION_RATIO		 	2.0f
-#define GIMBAL_MIDDLE_ANGLE   		100.0f
-#define GIMBAL_MIDDLE_ECD     			 4000
-#define NORMAL_PARAM						       12.12f
-/*扭腰模式相关参数*/
-/* 单位时间模式    扭腰周期 */
-#define GORGI_PERIOD                       1600
-/* 云台电机模式    扭腰幅度 */
-#define GORGI_GM_ANGLE                 40.0f
 
-#define GORGI_GM_OFFSET                8.0f
-/*reduction ratio of moto 3508 19/1*/
-#define C620_RATIO      (19/1)
+#define CHASSIS_THREAD_PERIOD 	  	2							// 运行周期
+#define GIMBAL_POSITION_RATIO		 		2.0f					// 云台 底盘 位置比例
+#define GIMBAL_MIDDLE_ANGLE   			100.0f      // 云台中值角度
+#define GIMBAL_MIDDLE_ECD     			 		4000				 // 云台中值码盘值
+#define NORMAL_PARAM						      	 	12.12f			 // 遥控器 - 底盘 响应比例 
+#define CHASSIS_VX_STOP                	500.0f				 //取弹模式 底盘VX分量
+/*扭腰模式相关参数*/
+#define GORGI_PERIOD                       1600      /* 单位时间模式    扭腰周期 */
+#define GORGI_GM_ANGLE                 40.0f			/* 云台电机模式    扭腰幅度 */
+#define GORGI_GM_OFFSET               8.0f
+/*底盘电机 PID 参数*/
+#define  CHASSIS_MAX_CURRENT        		15000 // 
+#define  CHASSIS_SPD_ERRORLLIM       	6000 // 
+#define  CHASSIS_SPD_KP                    		7.0f // 
+#define  CHASSIS_SPD_KI                      	  0.1f // 
+#define  CHASSIS_SPD_KD                    		0.0f // 
+/*抬升电机 PID 参数*/
+#define  LIFT_MAX_SPD                  	1200 // 
+#define  LIFT_ANG_ERRORLLIM     	3000 // 
+#define  LIFT_MAX_CURRENT        		15000 // 
+#define  LIFT_SPD_ERRORLLIM       	6000 // 
+#define  LIFT_ANG_KP                    	32.0f // 
+#define  LIFT_SPD_KP                    		40.0f // 
+#define  LIFT_SPD_KI                      	0.25f // 
+#define  LIFT_SPD_KD                    		0.0f // 
+/*底盘跟随 PID 参数*/
+#define  LINK_MAX_SPD                  	1200 // 
+#define  LINK_ANG_ERRORLLIM     	3000 // 
+#define  LINK_MAX_CURRENT        	15000 // 
+#define  LINK_SPD_ERRORLLIM       6000 // 
+#define  LINK_ANG_KP                    	32.0f // 
+#define  LINK_SPD_KP                    	40.0f // 
+#define  LINK_SPD_KI                      	0.25f // 
+#define  LINK_SPD_KD                    	0.0f // 
+
 
 chassis_t chassis;
 
@@ -40,15 +62,13 @@ void chassis_pid_init(void)
 	for(int i=0;i<6;i++)
 	{
 	  memset(&moto_chassis[i],0,sizeof(moto_param));
-	  PID_struct_init(&pid_chassis[i],6000,15000,7,0.1,0);              //          
+	  PID_struct_init(&pid_chassis[i],CHASSIS_SPD_ERRORLLIM,CHASSIS_MAX_CURRENT,CHASSIS_SPD_KP,CHASSIS_SPD_KI,CHASSIS_SPD_KD);              //          
 	} 
-	
-	PID_struct_init(&pid_out[LinkECD],0,0,0,0,0); 	
+  PID_struct_init(&pid_out[LinkECD],0,0,0,0,0);  	
   PID_struct_init(&pid_in[CGLink],0,0,0,0,0);  
-
-	PID_struct_init(&pid_out[LiftECD],0,0,0,0,0); 	
-  PID_struct_init(&pid_in[MotoLUpLft],0,0,0,0,0);
-  PID_struct_init(&pid_in[MotoRUpLft],0,0,0,0,0);	
+	PID_struct_init(&pid_out[LiftECD],LIFT_ANG_ERRORLLIM,LIFT_MAX_SPD,LIFT_ANG_KP,0,0); 	
+  PID_struct_init(&pid_in[MotoLUpLft],LIFT_SPD_ERRORLLIM,LIFT_MAX_CURRENT,LIFT_SPD_KP,LIFT_SPD_KI,LIFT_SPD_KD);
+  PID_struct_init(&pid_in[MotoRUpLft],LIFT_SPD_ERRORLLIM,LIFT_MAX_CURRENT,LIFT_SPD_KP,LIFT_SPD_KI,LIFT_SPD_KD);	
 }
 
 void chassis_thread(void const * argument)
@@ -60,18 +80,19 @@ void chassis_thread(void const * argument)
   {
 			ChassisHandleLastWakeTime = xTaskGetTickCount();		
 			taskENTER_CRITICAL();
-		
+#if 0		
 				for(int i=0;i<6;i++)
 				{
 					PID_struct_init(&pid_chassis[i],6000,15000,7,0.1,0);              //          
-				}								
+				}		
+#endif				
 				chassis_link_handle();
 				for(int i = MotoLeftUp; i < MotoNumber; i++)
 				{
 					pid_ast(&pid_chassis[i],chassis.target[i],moto_chassis[i].speed_rpm);
 					chassis.current[i] = (int16_t)pid_chassis[i].ctrOut;	
 				}
-#if 1				
+#if 0
 			PID_struct_init(&pid_out[LiftECD],3000,maxout1,_kp,_ki,_kd);  
 			PID_struct_init(&pid_in[MotoLUpLft],6000,15000,_kkp,_kki,_kkd);
 			PID_struct_init(&pid_in[MotoRUpLft],6000,15000,_kkp,_kki,_kkd);			
@@ -80,7 +101,7 @@ void chassis_thread(void const * argument)
 		    使用一个电机的外环输出值，作为内环控制的目标值
 		*/
 		/* 抬升电机PID控制    外环   理论目标位置           --        电机反馈位置  */				
-				pid_ast(&pid_out[LiftECD], chassis.targetPosition, (moto_chassis[MotoLeftUpLift].total_angle -moto_chassis[MotoLeftUpLift].offset_angle) / C620_RATIO);
+				pid_ast(&pid_out[LiftECD], chassis.targetPosition, moto_chassis[MotoLeftUpLift].total_angle);
 		/* 抬升电机PID控制    内环   外环输出量             --        电机反馈速度  */		
 				pid_ast(&pid_in[MotoLUpLft],pid_out[LiftECD].ctrOut,moto_chassis[MotoLeftUpLift].speed_rpm * SPD_RATIO); 
 				pid_ast(&pid_in[MotoRUpLft],-pid_out[LiftECD].ctrOut,moto_chassis[MotoRightUpLift].speed_rpm * SPD_RATIO);
@@ -88,7 +109,10 @@ void chassis_thread(void const * argument)
 				if(chassis.can_send_flag == SET)
 				{
 					send_chassis_cur(0x200,(int16_t)pid_in[MotoLUpLft].ctrOut,(int16_t)pid_in[MotoRUpLft].ctrOut,chassis.current[MotoLeftUp],chassis.current[MotoRightUp]);
-					send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],chassis.current[MotoMidUp],chassis.current[MotoMidDown]);
+					if(fabs(chassis.vw)>=100||fabs(chassis.vy)>=100) 
+						send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],0,0);
+					else
+						send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],chassis.current[MotoMidUp],chassis.current[MotoMidDown]);						
 				}
 				else
 				{
@@ -104,24 +128,23 @@ void chassis_thread(void const * argument)
 static void mecanum_algorithm(float vx,float vy, float vw,int16_t speed[])
 {
    static float Buffer[6];
-    Buffer[0] = vx + vy + vw;
-    Buffer[1] = vx - vy - vw;
-    Buffer[2] = vx - vy + GIMBAL_POSITION_RATIO*vw;
-    Buffer[3] = vx + vy - GIMBAL_POSITION_RATIO*vw;	
-    Buffer[4] = vx + vw; 
-    Buffer[5] = vx - vw;
+    Buffer[0] = vx + vy + GIMBAL_POSITION_RATIO*vw;
+    Buffer[1] = vx - vy - GIMBAL_POSITION_RATIO*vw;
+    Buffer[2] = vx - vy + vw;	
+    Buffer[3] = vx + vy - vw;	
+    Buffer[4] = vx; 
+    Buffer[5] = vx;	
 	  /* Because  the difference CC and C*/
 	  speed[0] =  Buffer[0];
     speed[1] = -Buffer[1];
     speed[2] =  Buffer[2];
-    speed[3] = -Buffer[3];			
+    speed[3] = -Buffer[3];
 	  speed[4] =  Buffer[4];
 	  speed[5] = -Buffer[5];	
 }
 	
 static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 {
-
   /* the angle which is calculating by using the atan2 function between Vx and Vy */
 	static float atan_angle = 0.0f; 
 	/* angle diff between gimbal and chassis */
@@ -130,7 +153,7 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 	static float merge_spd = 0.0f; 
 	
 		_chassis->vx = (_rc->ch1)*NORMAL_PARAM + _chassis->upStairVx;	
-		_chassis->vy = (_rc->ch0)*NORMAL_PARAM; 
+		_chassis->vy =-(_rc->ch0)*NORMAL_PARAM; 
 		#ifndef   PID_LINKAGE
 		_chassis->vw = (_rc->ch2)*NORMAL_PARAM*1.2f;   	
 		#else
@@ -146,7 +169,10 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 		_chassis->vx = merge_spd * cosf(-diff_angle);
 		_chassis->vy = -merge_spd * sinf(-diff_angle);
 		#endif
-		mecanum_algorithm(_chassis->vx,_chassis->vy,_chassis->vw,_chassis->target);	
+		if (_chassis->mode != CHASSIS_STOP)
+			mecanum_algorithm( _chassis->vx, _chassis->vy, _chassis->vw, _chassis->target);	
+		else
+			mecanum_algorithm(CHASSIS_VX_STOP, 0, _chassis->vw, _chassis->target);				
 }
 
 static void chassis_link_handle(void)

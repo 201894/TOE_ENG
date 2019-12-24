@@ -99,9 +99,9 @@ static void gimbal_pid_handle(void)
     pid_ast(&pid_fric[FricRight], -gimbal.fric_speed ,moto_fric[FricRight].speed_rpm);		
 		                            /* 拨盘电机目标角度          电机反馈角度（初始值为 0）   */		
     pid_ast(&pid_out[StirECD], 0, 
-		 (moto_gimbal[MotoStir].total_angle - moto_gimbal[MotoStir].offset_angle) / C610_RATIO);
+		 moto_gimbal[MotoStir].total_angle);
 		                            /* 拨盘外环输出量         电机反馈角速度   */				
-    pid_ast(&pid_in[MotoStir],pid_out[MotoStir].ctrOut, moto_gimbal[MotoStir].speed_rpmc);
+    pid_ast(&pid_in[MotoStir],pid_out[MotoStir].ctrOut, moto_gimbal[MotoStir].speed_rpm);
 	                              /* 发送计算得到的电流值 */
 		send_gimbal_cur(0x200,0,0,0,(int16_t)pid_in[MotoStir].ctrOut);				
 		                            /* PIT轴 机械外环 + 视觉外环                                        电机反馈角速度*/
