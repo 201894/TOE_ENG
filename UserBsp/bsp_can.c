@@ -11,6 +11,7 @@
 #include "cmsis_os.h"
 #include "can.h"
 #include "detect_thread.h"
+#include "kernal_thread.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -191,7 +192,18 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 				data4bytes.c[3] = RxData1[5];
 				ext_shoot_data.bullet_speed = data4bytes.f;	
 	    }	break;  	
-			
+/* 从机信息相关*/		
+	    case CAN_SLAVE_M1_ID:  
+			{
+				kernal_ctrl.slipPosFlag = RxData1[0];
+				err_detector_hook(CAN_COMMU_OFFLINE);
+				g_fps[COMMU].cnt ++;			
+				
+			}break;		
+	    case CAN_SLAVE_M2_ID:  
+			{
+				
+			}break;				
 	    default:
       {		 
       }break;
@@ -231,18 +243,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 				err_detector_hook(CAN_CHASSIS_OFFLINE);
 				g_fps[CHASSIS].cnt ++;							
 	    }break;  	
-/* 从机信息相关*/		
-	    case CAN_SLAVE_M1_ID:  
-			{
 				
-				err_detector_hook(CAN_COMMU_OFFLINE);
-				g_fps[COMMU].cnt ++;			
-				
-			}break;		
-	    case CAN_SLAVE_M2_ID:  
-			{
-				
-			}break;					
 			default:
       { 
       }break;
@@ -396,6 +397,7 @@ void send_can2_ms(uint32_t id,uint8_t data[8])
 void can_device_init(void)
 {
   //can1  filter config
+	  /* Filter 1 : Four ID */
   CAN_FilterTypeDef  can_filter;
   can_filter.FilterActivation     = ENABLE;	
   can_filter.FilterBank         	= 0U;
@@ -407,7 +409,7 @@ void can_device_init(void)
 	can_filter.FilterMaskIdHigh 		= ((uint16_t)CAN_YAW_ID)<<5;
 	can_filter.FilterMaskIdLow 			= ((uint16_t)CAN_3508_FL_ID)<<5;	
   HAL_CAN_ConfigFilter(&hcan1, &can_filter);	
-  /* Filter 2 : Four ID */
+  /* Filter 2 : Three ID */
   can_filter.FilterActivation 		= ENABLE;	
   can_filter.FilterBank 					= 1U;
 	can_filter.FilterMode 					= CAN_FILTERMODE_IDLIST;//列表模式

@@ -10,6 +10,7 @@
 #include "string.h"
 #include "usart.h"
 #include "bsp_uart.h"
+
 rc_info_t   rc,lrc;
 
 uint8_t  dbus_buf[DBbus_BUFLEN];
@@ -18,6 +19,7 @@ void rc_callback_handle(rc_info_t *rc, uint8_t *buff)
 {
 	if(buff[12] < 0x02 && buff[13] < 0x02)
 	{
+
 	  rc->ch0 = (buff[0] | buff[1] << 8) & 0x07FF;
 	  rc->ch0 -= 1024;
 	  rc->ch1 = (buff[1] >> 3 | buff[2] << 5) & 0x07FF;
@@ -38,6 +40,7 @@ void rc_callback_handle(rc_info_t *rc, uint8_t *buff)
 		  rc->mouse.l = buff[12];
 		  rc->mouse.r = buff[13];
 	      rc->kb.key_code = buff[14] | buff[15] << 8; // key borad code
+		
   }	
 	__HAL_UART_CLEAR_PEFLAG(&Dbus_usart);
 }

@@ -36,7 +36,7 @@
 #define  CHASSIS_SPD_KI                      	  0.1f // 
 #define  CHASSIS_SPD_KD                    		0.0f // 
 /*抬升电机 PID 参数*/
-#define  LIFT_MAX_SPD                  	1200 // 
+#define  LIFT_MAX_SPD                  	400 // 
 #define  LIFT_ANG_ERRORLLIM     	3000 // 
 #define  LIFT_MAX_CURRENT        		15000 // 
 #define  LIFT_SPD_ERRORLLIM       	6000 // 
@@ -83,7 +83,7 @@ void chassis_thread(void const * argument)
 #if 0		
 				for(int i=0;i<6;i++)
 				{
-					PID_struct_init(&pid_chassis[i],6000,15000,7,0.1,0);              //          
+					PID_struct_init(&pid_chassis[i],6000,maxout1,_kp,_ki,_kd);              //          
 				}		
 #endif				
 				chassis_link_handle();
@@ -106,12 +106,9 @@ void chassis_thread(void const * argument)
 				pid_ast(&pid_in[MotoLUpLft],pid_out[LiftECD].ctrOut,moto_chassis[MotoLeftUpLift].speed_rpm * SPD_RATIO); 
 				pid_ast(&pid_in[MotoRUpLft],-pid_out[LiftECD].ctrOut,moto_chassis[MotoRightUpLift].speed_rpm * SPD_RATIO);
 		/* 计算得 电机 闭环 电流值 发送    抬升电机 201 202   底盘电机 203 ~ 208 */						
-				if(chassis.can_send_flag == SET)
+				if(chassis.canSendFlag == SET)
 				{
 					send_chassis_cur(0x200,(int16_t)pid_in[MotoLUpLft].ctrOut,(int16_t)pid_in[MotoRUpLft].ctrOut,chassis.current[MotoLeftUp],chassis.current[MotoRightUp]);
-					if(fabs(chassis.vw)>=100||fabs(chassis.vy)>=100) 
-						send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],0,0);
-					else
 						send_chassis_cur(0x1ff,chassis.current[MotoLeftDown],chassis.current[MotoRightDown],chassis.current[MotoMidUp],chassis.current[MotoMidDown]);						
 				}
 				else
@@ -128,12 +125,12 @@ void chassis_thread(void const * argument)
 static void mecanum_algorithm(float vx,float vy, float vw,int16_t speed[])
 {
    static float Buffer[6];
-    Buffer[0] = vx + vy + GIMBAL_POSITION_RATIO*vw;
-    Buffer[1] = vx - vy - GIMBAL_POSITION_RATIO*vw;
+    Buffer[0] = vx + vy + vw;
+    Buffer[1] = vx - vy - vw;
     Buffer[2] = vx - vy + vw;	
     Buffer[3] = vx + vy - vw;	
-    Buffer[4] = vx; 
-    Buffer[5] = vx;	
+    Buffer[4] = vx + vw; 
+    Buffer[5] = vx - vw;	
 	  /* Because  the difference CC and C*/
 	  speed[0] =  Buffer[0];
     speed[1] = -Buffer[1];
@@ -169,10 +166,10 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 		_chassis->vx = merge_spd * cosf(-diff_angle);
 		_chassis->vy = -merge_spd * sinf(-diff_angle);
 		#endif
-		if (_chassis->mode != CHASSIS_STOP)
+		if (_chassis->stopFlag == 0)
 			mecanum_algorithm( _chassis->vx, _chassis->vy, _chassis->vw, _chassis->target);	
 		else
-			mecanum_algorithm(CHASSIS_VX_STOP, 0, _chassis->vw, _chassis->target);				
+			mecanum_algorithm(CHASSIS_VX_STOP, 0, 0, _chassis->target);				
 }
 
 static void chassis_link_handle(void)

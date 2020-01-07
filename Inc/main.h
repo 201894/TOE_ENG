@@ -62,12 +62,16 @@ void Error_Handler(void);
 #define IST_SET_GPIO_Port GPIOE
 #define LASER_Pin GPIO_PIN_13
 #define LASER_GPIO_Port GPIOG
+#define OLED_DC_Pin GPIO_PIN_9
+#define OLED_DC_GPIO_Port GPIOB
 #define INA_Pin GPIO_PIN_0
 #define INA_GPIO_Port GPIOI
 #define INB_Pin GPIO_PIN_12
 #define INB_GPIO_Port GPIOH
 #define INC_Pin GPIO_PIN_11
 #define INC_GPIO_Port GPIOH
+#define OLED_RST_Pin GPIO_PIN_10
+#define OLED_RST_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

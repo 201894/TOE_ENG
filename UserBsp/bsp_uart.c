@@ -94,7 +94,6 @@ void UART_RX_IDLE_IRQ(UART_HandleTypeDef *huart){
 			if(__HAL_UART_GET_FLAG(&bt_usart,UART_FLAG_IDLE) != RESET){
 			__HAL_UART_CLEAR_IDLEFLAG(&bt_usart);		
 			HAL_UART_DMAStop(&bt_usart);
-				printf("uart3_buff = %d\r\n",bt_buf[0]);
 			HAL_UART_Receive_DMA(&bt_usart,bt_buf,BT_BUFLEN);						
 		}
 	}

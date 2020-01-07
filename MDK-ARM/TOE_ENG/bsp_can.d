@@ -23,10 +23,13 @@ toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
+toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 toe_eng\bsp_can.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
@@ -50,6 +53,7 @@ toe_eng\bsp_can.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_grou
 toe_eng\bsp_can.o: ../Inc/can.h
 toe_eng\bsp_can.o: ../Inc/main.h
 toe_eng\bsp_can.o: ..\MainTasks\detect_thread.h
+toe_eng\bsp_can.o: ..\MainTasks\kernal_thread.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h

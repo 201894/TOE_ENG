@@ -23,10 +23,13 @@ toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
+toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 toe_eng\kernal_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
@@ -55,6 +58,8 @@ toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 toe_eng\kernal_thread.o: ..\UserBsp\bsp_io.h
 toe_eng\kernal_thread.o: ../Inc/gpio.h
 toe_eng\kernal_thread.o: ../Inc/tim.h
+toe_eng\kernal_thread.o: ..\RmLib\pid.h
+toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
 toe_eng\kernal_thread.o: ..\RmLib\STMGood.h
 toe_eng\kernal_thread.o: ..\RmLib\km_handle.h
 toe_eng\kernal_thread.o: ..\DeCode\DR16_decode.h

@@ -23,10 +23,13 @@ toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
+toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h
+toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
+toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_iwdg.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 toe_eng\detect_thread.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
@@ -53,4 +56,8 @@ toe_eng\detect_thread.o: ..\UserBsp\bsp_io.h
 toe_eng\detect_thread.o: ../Inc/gpio.h
 toe_eng\detect_thread.o: ../Inc/main.h
 toe_eng\detect_thread.o: ../Inc/tim.h
+toe_eng\detect_thread.o: ..\RmLib\oled.h
+toe_eng\detect_thread.o: ../Inc/spi.h
+toe_eng\detect_thread.o: ../Inc/adc.h
+toe_eng\detect_thread.o: ../Inc/iwdg.h
 toe_eng\detect_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h

@@ -34,6 +34,7 @@
 #include "bsp_can.h"
 #include "chassis_thread.h"
 #include "pid.h" 
+#include "iwdg.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -231,8 +232,7 @@ void debug_thread(void const * argument)
 #if 1
 			printf("# UPLIFT PID REVENLENT : #\r\n");				
 			printf("TargetAngle = %.2f\r\n",chassis.targetPosition);	
-			printf("Currentecd = %d\r\n",moto_chassis[MotoLeftUpLift].ecd);	
-			
+			printf("Currentecd = %d\r\n",moto_chassis[MotoLeftUpLift].ecd);				
 			printf("CurrentAngle = %.2f\r\n",moto_chassis[MotoLeftUpLift].total_angle);	
 			printf("AngleError = #%.2f\r\n",pid_out[LiftECD].errNow);	
 			printf("FirstCtrOut = %.2f\r\n",pid_out[LiftECD].ctrOut);				
@@ -247,6 +247,7 @@ void debug_thread(void const * argument)
 			LED_G_TOG;
 		}
 //			ledFlow(1600,8);
+
 		  osDelay(200);
   }
   /* USER CODE END debug_thread */

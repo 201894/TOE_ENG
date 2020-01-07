@@ -21,8 +21,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
 #include "can.h"
 #include "dma.h"
+#include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -108,10 +110,12 @@ int main(void)
   MX_UART7_Init();
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
+  MX_ADC1_Init();
+
+  MX_SPI1_Init();
   MX_TIM3_Init();
   MX_UART8_Init();
   /* USER CODE BEGIN 2 */
-
 	USART_InitArgument();
    	HAL_Delay(200);	
 	CAN_InitArgument();
@@ -120,8 +124,10 @@ int main(void)
 	   	HAL_Delay(200);
 	DETECT_InitArgument();
   GPIO_InitArgument();	
-//		   	HAL_Delay(200);
+		  HAL_Delay(200);
+  ADC_InitArgument();			
 	LED_R_ON;
+	MX_IWDG_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
@@ -158,8 +164,9 @@ void SystemClock_Config(void)
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
   /** Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 6;

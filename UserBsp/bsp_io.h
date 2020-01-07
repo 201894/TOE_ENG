@@ -20,6 +20,7 @@
 #define LED_R_ON   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_RESET)
 #define LED_R_OFF  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET)
 #define LED_R_TOG  HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_11)
+
 #define led_init \
 {\
   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_14, GPIO_PIN_SET);\
@@ -35,6 +36,7 @@
 #define DEFORM_PIN									GPIO_PIN_4
 			/*		SparePin £ºPH5			*/
 void busserCtrl(float arr, uint16_t length);
+void oledCtrl(void);
 void vcc_out_init(void);
 void GPIO_InitArgument(void);
 void ledFlow(uint32_t period,uint8_t number);

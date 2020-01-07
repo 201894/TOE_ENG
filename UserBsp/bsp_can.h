@@ -79,6 +79,9 @@ typedef enum
 
 typedef enum
 {
+  CAN_FLIP_M1_ID            = 0x201,	
+	CAN_FLIP_M2_ID            = 0x202,
+  CAN_SLIP_ID             			= 0x203, 		
   CAN_STIR_ID              		= 0x204,		
   CAN_3508_FL_ID            = 0x207,
   CAN_3508_FR_ID            = 0x208,

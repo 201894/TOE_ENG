@@ -9,6 +9,8 @@
 
 #include "bsp_io.h"
 #include "cmsis_os.h" 
+#include "oled.h"
+
 #define DURATION_PARAM    0.3f
 #define TUNE_LEN              		30
 /* Super Mario */
@@ -84,6 +86,7 @@ void GPIO_InitArgument(void)
   LASER_OFF;
 	LED_R_OFF;
 	LED_G_OFF;
+	oled_init();
 	vcc_out_init();
   HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);	
 //	busserCtrl(DURATION_PARAM,TUNE_LEN);

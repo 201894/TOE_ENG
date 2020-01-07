@@ -41,8 +41,10 @@ typedef  struct
   float         							upStairVx;	
   float         							corgiAngle;	
 	float 											targetPosition;   // 抬升位置 (电机角度环目标)	
-	uint8_t               		can_send_flag;
+	uint8_t               		stopFlag;	
+	uint8_t               		canSendFlag;
 	uint8_t                   corgiInitFlag;		
+
 	uint8_t                   corgiFlag;	
 	uint16_t                 corgiCnt;
   int16_t        						corgiVw;  	

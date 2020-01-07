@@ -13,10 +13,12 @@
 #include "bsp_can.h"
 #include "cmsis_os.h"
 #include "bsp_io.h"
+#include "oled.h"
+#include "adc.h"
+#include "iwdg.h"
 #include "freertos.h"
 #include "tim.h"
 #include "string.h"
-#include "tim.h"
 
 #define DETECT_THREAD_PERIOD 			100
 UBaseType_t detect_stack_surplus;
@@ -164,7 +166,8 @@ void detect_thread(void const *argu)
     module_fps_clear();
 /* Solve massage send */			
 //		slove_ms_send(kernal_ctrl.global_mode);
-		
+/* HAL_IWDG_Refresh */					
+		HAL_IWDG_Refresh(&hiwdg);
    // detect_stack_surplus = uxTaskGetStackHighWaterMark(NULL);    
     osDelayUntil(&detect_wake_time, DETECT_THREAD_PERIOD);
   }
@@ -310,6 +313,63 @@ static void module_fps_clear(void)
 			memcpy(&r_fps[i], &g_fps[i], sizeof(global_fps_t));					
 			memset(&g_fps[i], 0, sizeof(global_fps_t));		
 		}
+}
+
+void OLED_CTRL(void)
+{
+		OLED_Button();
+		oled_clear(Pen_Clear);		
+		switch (OLED_ADC_flag)
+		{
+			case 0 :
+			{
+				oled_LOGO();			
+			}break;
+			case 1 :
+			{
+				/*OLED PRINTF FPS REVELENT*/
+
+				oled_printf(1,1,"CHA FPS");
+				oled_shownum(1,14,r_fps[CHASSIS].fps,0x00,4);	
+
+				oled_printf(2,1,"LUP FPS");				
+			  oled_shownum(2,14,r_fps[LUP].fps,0x00,4);	
+				
+				oled_printf(3,1,"RUP FPS");	
+				oled_shownum(3,14,r_fps[RUP].fps,0x00,4);					
+//				
+//				oled_printf(4,1,"MARID FPS");			
+//				oled_shownum(4,14,r_fps[MasterID].fps,0x00,4);	
+					
+			}break;
+			case 2 :
+			{
+				/*OLED PRINTF GNS STATE REVELENT*/
+
+//				oled_printf(1,1,"LEFT_GNS");
+//				oled_shownum(1,14,LEFT_GNS,0x00,4);	
+
+//				oled_printf(2,1,"MIDD_GNS");				
+//			  oled_shownum(2,14,MID_GNS,0x00,4);	
+//				
+//				oled_printf(3,1,"RIGT_GNS");	
+//				oled_shownum(3,14,RIGHT_GNS,0x00,4);						
+			}break;
+			case 3 :
+			{
+				
+			}break;			
+			case 4 :
+			{
+				
+			}break;			
+			case 5 :
+			{
+				
+			}break;						
+		}
+				
+    oled_refresh_gram();	
 }
 
 

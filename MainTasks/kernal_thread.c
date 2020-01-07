@@ -13,13 +13,16 @@
 #include "bsp_can.h"
 #include "bsp_uart.h"
 #include "bsp_io.h"
+#include "pid.h"
+#include "math.h"
 #include "STMGood.h"
 #include "km_handle.h"
 #include "chassis_thread.h"
 #include "gimbal_thread.h"
 
 kernal_ctrl_t kernal_ctrl;
-
+#define  LIFT_MAX_ANGLE       550.0f
+#define  LIFT_INIT_ANGLE      0.0f
 void kernal_thread(void const * argument)
 {
   /* USER CODE BEGIN KERNAL_THREAD */
@@ -46,8 +49,7 @@ void kernal_thread(void const * argument)
 
 static void get_main_ctrl_mode(void)
 {
-	
-	
+		
     switch (rc.sw1)  
 		{
       case RC_DN:
@@ -74,9 +76,11 @@ static void get_main_ctrl_mode(void)
       }break;				
       case RC_MI:
       {
+				
       }break;		  		
       case RC_UP:
       {
+				
       }break;				
 		}
 }
@@ -95,28 +99,56 @@ static void get_chassis_mode(void)
       }break;		
       case SEMI_AUTO_MODE:
       {
-					chassis.mode = CHASSIS_STOP;  // 临时 模式 取弹模式 
+
       }break;				
       case AUTO_CTRL_MODE:
       {
 					
       }break;		
+      case AUTO_FETCH_MODE:
+      {
+					chassis.mode = CHASSIS_STOP;  //  取弹模式 					
+      }break;					
 		}
 }
+static void chassis_state_init(void)
+{
+	chassis.canSendFlag = SET; // CAN2 pid处理电流值发送标志位默认置 1
+	chassis.stopFlag = RESET;	  // 底盘状态标志位 默认 为 0，取弹模式下为 1
+	if(SLIP_POS_STATE){
+		chassis.targetPosition = LIFT_INIT_ANGLE;
+	}
+	
+}
+
+	/* 返回抬升电机位置状态 精度在误差范围内返回1 否则返回0 */
+static uint8_t angle_accuracy(float error)
+{
+	if (fabs(pid_out[LiftECD].errNow)<=error){
+		return 1; 
+	}
+	else{ 
+		return 0;				
+	}
+}	
 
 static void chassis_mode_handle(void)
 {
 	
-	chassis.can_send_flag = SET; // CAN2 pid处理电流值发送标志位默认置 1
+	chassis_state_init(); // 底盘状态 初始化 
+	
   switch (chassis.mode)
 	{
       case CHASSIS_RELAX:
       {
-					chassis.can_send_flag = RESET;  // CAN2 pid处理电流值发送标志位置 0
+					chassis.canSendFlag = RESET;  // CAN2 pid处理电流值发送标志位置 0
       }break;					
-      case CHASSIS_STOP:
+      case CHASSIS_STOP:   
       {
-					
+				chassis.targetPosition = LIFT_MAX_ANGLE;  
+				if(angle_accuracy(50.0f) == 1){
+					chassis.stopFlag = SET; 				
+				} 
       }break;		
       case MANUAL_SEPARATE_GIMBAL:
       {
@@ -144,6 +176,7 @@ static void chassis_mode_handle(void)
       }break;					
 	}
 }
+
 static void kb_enable_hook(void)
 {
 		if (rc.sw1 == RC_MI && rc.sw2 == RC_UP)

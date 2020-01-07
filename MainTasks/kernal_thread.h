@@ -15,9 +15,11 @@
 
 #define KERNAL_THREAD_PERIOD   5
 #define SPD_RATIO   0.2f
+#define SLIP_POS_STATE   HAL_GPIO_ReadPin(INA_GPIO_Port,INA_Pin)&&(kernal_ctrl.slipPosFlag)
 typedef enum
 {
   MANUAL_CTRL_MODE = 0,
+	AUTO_FETCH_MODE,
   SEMI_AUTO_MODE,
   AUTO_CTRL_MODE,
   SAFETY_MODE,
@@ -25,7 +27,7 @@ typedef enum
 
 typedef  struct
 {
-
+  uint8_t 							slipPosFlag; // 滑移电机位置 标志位 u触碰开关时为1 否则为0
   global_mode_e  global_mode; // 总模式控制
 } kernal_ctrl_t;
 

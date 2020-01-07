@@ -109,7 +109,7 @@ extern global_err_t g_err;
 extern global_fps_t g_fps[MaxId];
 extern global_fps_t r_fps[MaxId];
 void detector_init(void);
-
+void OLED_CTRL(void);
 void err_detector_hook(int err_id);
 void slove_ms_send(uint8_t mode, float targrt_angle);
 void DETECT_InitArgument(void);

@@ -17,6 +17,7 @@
 #include "pid.h"
 #include "user_lib.h"
 
+
 /* the * ratio of pit and yaw when using RC */
 #define RC_YAW_RATIO             0.00063 // 0.0001    
 #define RC_PIT_RATIO             0.002 //  0.0008 
@@ -68,8 +69,7 @@ void gimbal_thread(void const * argument)
 
 		gimbal_target_handle(&rc,&gimbal);	
 //		gimbal_mode_switch();
-//		gimbal_pid_handle();
-		
+//		gimbal_pid_handle();		
 		taskEXIT_CRITICAL();
     osDelayUntil(&GimbalHandleLastWakeTime,GIMBAL_THREAD_PERIOD);			
   }
@@ -111,7 +111,4 @@ static void gimbal_pid_handle(void)
 																/* 发送计算得到的电流值 */		
 		send_gimbal_cur(0x1ff,(int16_t)pid_in[MotoPit].ctrOut,(int16_t)pid_in[MotoYaw].ctrOut,(int16_t)pid_fric[FricLeft].ctrOut,(int16_t)pid_fric[FricRight].ctrOut);		    
 }
-
-
-
 
