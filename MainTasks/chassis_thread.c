@@ -17,6 +17,7 @@
 #include "pid.h"
 #include "string.h"
 #include "math.h"
+#include "user_lib.h"
 #include "bsp_io.h"
 
 #define CHASSIS_THREAD_PERIOD 	  	2							// 运行周期
@@ -24,7 +25,7 @@
 #define GIMBAL_MIDDLE_ANGLE   			100.0f      // 云台中值角度
 #define GIMBAL_MIDDLE_ECD     			 		4000				 // 云台中值码盘值
 #define NORMAL_PARAM						      	 	12.12f			 // 遥控器 - 底盘 响应比例 
-#define CHASSIS_VX_STOP                	500.0f				 //取弹模式 底盘VX分量
+#define CHASSIS_VX_STOP                	600.0f				 //取弹模式 底盘VX分量
 /*扭腰模式相关参数*/
 #define GORGI_PERIOD                       1600      /* 单位时间模式    扭腰周期 */
 #define GORGI_GM_ANGLE                 40.0f			/* 云台电机模式    扭腰幅度 */
@@ -36,7 +37,7 @@
 #define  CHASSIS_SPD_KI                      	  0.1f // 
 #define  CHASSIS_SPD_KD                    		0.0f // 
 /*抬升电机 PID 参数*/
-#define  LIFT_MAX_SPD                  	400 // 
+#define  LIFT_MAX_SPD                  	800 // 
 #define  LIFT_ANG_ERRORLLIM     	3000 // 
 #define  LIFT_MAX_CURRENT        		15000 // 
 #define  LIFT_SPD_ERRORLLIM       	6000 // 
@@ -100,6 +101,7 @@ void chassis_thread(void const * argument)
 		/* 抬升电机 及 翻转电机 控制策略 ：		
 		    使用一个电机的外环输出值，作为内环控制的目标值
 		*/
+				chassis_target_constrain();
 		/* 抬升电机PID控制    外环   理论目标位置           --        电机反馈位置  */				
 				pid_ast(&pid_out[LiftECD], chassis.targetPosition, moto_chassis[MotoLeftUpLift].total_angle);
 		/* 抬升电机PID控制    内环   外环输出量             --        电机反馈速度  */		
@@ -121,7 +123,10 @@ void chassis_thread(void const * argument)
   }
   /* USER CODE END pid_handle_task */
 }
-
+static void chassis_target_constrain(void)
+{
+	chassis.targetPosition = float_constrain(chassis.targetPosition,0,564);
+}
 static void mecanum_algorithm(float vx,float vy, float vw,int16_t speed[])
 {
    static float Buffer[6];
@@ -168,8 +173,11 @@ static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis)
 		#endif
 		if (_chassis->stopFlag == 0)
 			mecanum_algorithm( _chassis->vx, _chassis->vy, _chassis->vw, _chassis->target);	
-		else
-			mecanum_algorithm(CHASSIS_VX_STOP, 0, 0, _chassis->target);				
+		else{
+//			kernal_ctrl.flipAngle -= (float)(_rc->ch3)*0.002;
+//			_chassis->targetPosition  += (float)(_rc->ch1)*0.002;			
+			mecanum_algorithm(CHASSIS_VX_STOP, 0, 0, _chassis->target);	
+		}			
 }
 
 static void chassis_link_handle(void)

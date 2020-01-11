@@ -16,6 +16,24 @@
 
 #define GIMBAL_THREAD_PERIOD     5
 
+typedef enum
+{
+	
+	VV_SHIFT_TO_RIGHT = 0, // Î¢Î¢Æ«ÓÒ
+	VV_SHIFT_TO_LEFT,  // Î¢Î¢Æ«×ó
+	SHIFT_TO_RIGHT,  //  Æ«ÓÒ
+	SHIFT_TO_LEFT,	  // Æ«×ó
+	ERROR_STATE,
+	CORRECT_STATE,
+} claw_state_e;
+typedef enum
+{
+	INIT_R_ANGLE = 0,						// ÆðÊ¼ ½Ç¶È
+  MIN_R_ANGLE = -20,					// Ð¶ºÉ ½Ç¶È 
+	EVALVE_SELFLOCK_ANGLE = -110,    // Æø¸××ÔËø½Ç¶È
+  MID_R_ANGLE = -90,			    // É¨Ãè ½Ç¶È ´¹Ö±
+  MAX_R_ANGLE = -182,				// ¼ÐÈ¡ ½Ç¶È
+} flip_angle_e;
 
 typedef enum
 {
@@ -40,6 +58,7 @@ typedef struct
 
 static void gimbal_pid_handle(void);
 static void gimbal_mode_switch(void);
+static void gimbal_target_constrain(void);
 static void gimbal_target_handle(rc_info_t *_rc , gimbal_t *_gimbal);
 void gimbal_pid_init(void);
 extern gimbal_t gimbal;

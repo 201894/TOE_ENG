@@ -67,3 +67,4 @@ toe_eng\freertos.o: ..\MainTasks\gimbal_thread.h
 toe_eng\freertos.o: ..\MainTasks\chassis_thread.h
 toe_eng\freertos.o: ..\RmLib\pid.h
 toe_eng\freertos.o: ../Inc/iwdg.h
+toe_eng\freertos.o: ..\MainTasks\kernal_thread.h

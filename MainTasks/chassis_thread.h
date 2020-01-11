@@ -41,10 +41,10 @@ typedef  struct
   float         							upStairVx;	
   float         							corgiAngle;	
 	float 											targetPosition;   // 抬升位置 (电机角度环目标)	
-	uint8_t               		stopFlag;	
+		float extraUpPos;
 	uint8_t               		canSendFlag;
 	uint8_t                   corgiInitFlag;		
-
+	uint8_t 									stopFlag;	
 	uint8_t                   corgiFlag;	
 	uint16_t                 corgiCnt;
   int16_t        						corgiVw;  	
@@ -56,6 +56,7 @@ typedef  struct
 
 static void chassis_link_handle(void);
 static void chassis_pid_handle(void);
+static void chassis_target_constrain(void);
 static void mecanum_algorithm(float vx,float vy, float vw,int16_t speed[]);
 static void chassis_algorithm(rc_info_t *_rc , chassis_t *_chassis);
 static void corgi_mode_ctrl(int16_t Corgi_Angle, \

@@ -43,6 +43,7 @@ toe_eng\gimbal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
 toe_eng\gimbal_thread.o: ..\MainTasks\detect_thread.h
 toe_eng\gimbal_thread.o: ..\UserBsp\bsp_can.h
 toe_eng\gimbal_thread.o: ..\MainTasks\kernal_thread.h
+toe_eng\gimbal_thread.o: ..\MainTasks\chassis_thread.h
 toe_eng\gimbal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 toe_eng\gimbal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 toe_eng\gimbal_thread.o: ../Inc/FreeRTOSConfig.h

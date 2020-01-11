@@ -165,7 +165,11 @@ void detect_thread(void const *argu)
     module_fps_detect();
     module_fps_clear();
 /* Solve massage send */			
-//		slove_ms_send(kernal_ctrl.global_mode);
+		slove_ms_send(kernal_ctrl.fetchMode, \
+																	UPLIFT_POS_STATE, \
+																		SLIP_POS_STATE, \
+																			0, \
+																				0);
 /* HAL_IWDG_Refresh */					
 		HAL_IWDG_Refresh(&hiwdg);
    // detect_stack_surplus = uxTaskGetStackHighWaterMark(NULL);    
@@ -284,16 +288,23 @@ static void module_offline_callback(void)
 }
 
 
-void slove_ms_send(uint8_t mode, float targrt_angle)
+void slove_ms_send(uint8_t mode, \
+																	uint8_t flag1, \
+																		uint8_t flag2, \
+																			uint8_t flag3, \
+																				float targrt_angle)
 {
-	
 	uint8_t  canTxData[8];
-	data4bytes.f = targrt_angle;
+
 	canTxData[0] =  mode;		
-	canTxData[1] =  data4bytes.c[0];
-	canTxData[2] =  data4bytes.c[1];
-	canTxData[3] =  data4bytes.c[2];
-	canTxData[4] =  data4bytes.c[3];	
+	canTxData[1] =  flag1;		
+	canTxData[2] =  flag2;		
+	canTxData[3] =  flag3;			
+	data4bytes.f = targrt_angle;	
+	canTxData[4] =  data4bytes.c[0];
+	canTxData[5] =  data4bytes.c[1];
+	canTxData[6] =  data4bytes.c[2];
+	canTxData[7] =  data4bytes.c[3];	
   send_can2_ms(CAN_SEND_M1_ID,canTxData);		
 }
 

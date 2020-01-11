@@ -149,7 +149,6 @@ void ledFlow(uint32_t period,uint8_t number)
 {	
    for (int i = 0; i <= 7; i++)
    {
-
 			 for (int j = 0; j < number; j++)
 			 {
 				    if(j!=0&j!=1&j!=4&j!=6)
@@ -165,4 +164,20 @@ void ledFlow(uint32_t period,uint8_t number)
 			 }	 	 
 		 
    }
+}
+
+uint8_t SLIP_SWITCH(void)
+{
+	uint8_t i;
+	float sum;
+	float average;
+	for(i=1;i<11;i++)
+	{
+		sum += Slip_SWITCH;
+		average = sum/i;
+	}	
+	if(average <= 0.2)
+		return 1;
+	else
+		return 0;
 }

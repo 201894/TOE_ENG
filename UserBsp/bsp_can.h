@@ -25,9 +25,12 @@ typedef enum
 	MotoStir  = 0,	
   MotoPit  = 1,  //
   MotoYaw  = 2,	
-	CGLink  = 3,  
-	MotoLUpLft  = 4,
-	MotoRUpLft = 5,
+	MotoSlip = 3,
+	MotoLFlip  = 4,
+	MotoRFlip = 5, 
+	MotoLUpLft  = 6,
+	MotoRUpLft = 7,
+	CGLink  = 8, 
 }GimbalModule_ID;
 
 typedef enum
@@ -40,8 +43,7 @@ typedef enum
 	MotoMidDown 		      = 5,
   MotoLeftUpLift     		= 6,	 	
 	MotoRightUpLift 		  = 7,	
-	MotoNumber           = 6,
-	
+	MotoNumber           = 6,	
 	MaxId                        = 20,		
 }ChassisModule_ID;
 
@@ -54,6 +56,8 @@ typedef enum
   YawVIS      = 4,	 	
   PitECD     = 5,  //
   PitVIS      = 6,	 	
+	SlipECD      = 7,
+	FlipECD   = 8,	
 }GimbalModuleCtrl_ID;
 
 typedef enum
@@ -83,10 +87,10 @@ typedef enum
 	CAN_FLIP_M2_ID            = 0x202,
   CAN_SLIP_ID             			= 0x203, 		
   CAN_STIR_ID              		= 0x204,		
+	CAN_PIT_ID               		 = 0x205,
+  CAN_YAW_ID              		 = 0x206, 	
   CAN_3508_FL_ID            = 0x207,
   CAN_3508_FR_ID            = 0x208,
-	CAN_PIT_ID               		 = 0x205,
-  CAN_YAW_ID              		 = 0x206, 
 	CAN_SLAVE_M1_ID         = 0x311,
 	CAN_SLAVE_M2_ID          = 0x312,	
 	CAN_SEND_M1_ID           = 0x301,
@@ -291,7 +295,7 @@ typedef __packed struct
 
 extern  moto_param  moto_fric[2];
 extern	moto_param  moto_chassis[8];
-extern  moto_param  moto_gimbal[3];
+extern  moto_param  moto_gimbal[5];
 extern  wl4data     data4bytes;
 
 extern ext_game_state_t               ext_game_state;

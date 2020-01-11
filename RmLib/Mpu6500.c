@@ -265,7 +265,7 @@ uint8_t MPU6500_Init(void)
     { MPU6500_USER_CTRL,      0x20 }, // Enable the I2C Master I/F module
                                       // pins ES_DA and ES_SCL are isolated from 
                                       // pins SDA/SDI and SCL/SCLK.
-  };
+  }; 
   for(index = 0; index < 7; index++)
   {
     MPU6500_Write_Reg(MPU6500_Init_Data[index][0], MPU6500_Init_Data[index][1]);

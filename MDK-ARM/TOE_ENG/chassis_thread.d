@@ -60,6 +60,7 @@ toe_eng\chassis_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/eve
 toe_eng\chassis_thread.o: ..\RmLib\STMGood.h
 toe_eng\chassis_thread.o: ..\RmLib\pid.h
 toe_eng\chassis_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
+toe_eng\chassis_thread.o: ..\RmLib\user_lib.h
 toe_eng\chassis_thread.o: ..\UserBsp\bsp_io.h
 toe_eng\chassis_thread.o: ../Inc/gpio.h
 toe_eng\chassis_thread.o: ../Inc/main.h

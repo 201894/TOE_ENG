@@ -54,6 +54,10 @@ toe_eng\bsp_can.o: ../Inc/can.h
 toe_eng\bsp_can.o: ../Inc/main.h
 toe_eng\bsp_can.o: ..\MainTasks\detect_thread.h
 toe_eng\bsp_can.o: ..\MainTasks\kernal_thread.h
-toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
+toe_eng\bsp_can.o: ..\MainTasks\chassis_thread.h
+toe_eng\bsp_can.o: ..\DeCode\DR16_decode.h
+toe_eng\bsp_can.o: ..\RmLib\RMsystem.h
+toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
+toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
 toe_eng\bsp_can.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdio.h

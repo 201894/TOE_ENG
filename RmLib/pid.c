@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 
-PID_Typedef pid_out[7]       ={0};//  
+PID_Typedef pid_out[9]       ={0};//  
 /*
 LinkECD     	= 0,		
 StirECD      	= 1,
@@ -20,18 +20,22 @@ YawIMU      	= 3,
 YawVIS      	= 4,	 	
 PitECD     		= 5,  
 PitVIS     	 		= 6,	 	
+PitSlip     			= 7,  
+PitFlip     	 		= 8,	 	
 */
-PID_Typedef pid_in[6]       ={0};// 
+PID_Typedef pid_in[9]       ={0};// 
 /*
 MotoStir  				= 0,
 MotoPit  				= 1, 
 MotoYaw  			= 2,
 CGLink  				= 3, 
 MotoLUpLft  	= 4, 
-MotoRUpLft 	= 5, 
+MotoRUpLft 	= 5,
+MotoSlip  			= 6, 
+MotoLFlip  		= 7, 
+MotoRFlip 			= 8, 
 */
 PID_Typedef pid_chassis[6]      ={0};//3508 x 6
-
 PID_Typedef pid_fric[2]              ={0};
 
 /**

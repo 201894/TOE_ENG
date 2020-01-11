@@ -31,6 +31,9 @@ typedef enum
 	 GYROP, 
 	 LUP,
 	 RUP,
+	SLIP,
+	LFLIP,
+	RFLIP,
 }module_fps_e;
 
 typedef enum
@@ -49,10 +52,13 @@ typedef enum
   CAN_STIR_M1_OFFLINE          	= 11,  
 	CAN_UPLIFT_LEFT_OFFLINE   = 12,
 	CAN_UPLIFT_RIGHT_OFFLINE = 13,
-  BULLET_JAM               							= 14,
-  CHASSIS_CONFIG_ERR   		 			= 15,
-  GIMBAL_CONFIG_ERR   	 					= 16,
-  ERROR_LIST_LENGTH    					= 17,
+  CAN_SLIP_M1_OFFLINE          	= 14,  
+	CAN_FLIP_LEFT_OFFLINE   			= 15,
+	CAN_FLIP_RIGHT_OFFLINE 			= 16,	
+  BULLET_JAM               							= 17,
+  CHASSIS_CONFIG_ERR   		 			= 18,
+  GIMBAL_CONFIG_ERR   	 					= 19,
+  ERROR_LIST_LENGTH    					= 20,
 } err_id_e;
 
 typedef enum
@@ -111,7 +117,11 @@ extern global_fps_t r_fps[MaxId];
 void detector_init(void);
 void OLED_CTRL(void);
 void err_detector_hook(int err_id);
-void slove_ms_send(uint8_t mode, float targrt_angle);
+void slove_ms_send(uint8_t mode, \
+																	uint8_t flag1, \
+																		uint8_t flag2, \
+																			uint8_t flag3, \
+																				float targrt_angle);
 void DETECT_InitArgument(void);
 static void module_offline_callback(void);
 static void module_offline_detect(void);

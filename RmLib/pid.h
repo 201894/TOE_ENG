@@ -55,8 +55,8 @@ void pid_adjust(
 		float kd);
 		
 		
-extern  PID_Typedef pid_out[7];
-extern  PID_Typedef pid_in[6];
+extern  PID_Typedef pid_out[9];
+extern  PID_Typedef pid_in[9];
 extern  PID_Typedef pid_chassis[6]; 				
 extern	PID_Typedef pid_link_out;// total_angle of 6020 supposed to be out_pid; Gyro.gz to handle the in_pid
 extern	PID_Typedef pid_link_in;			

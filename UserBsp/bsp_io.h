@@ -12,6 +12,8 @@
 #include  "gpio.h"
 #include "tim.h"
 
+#define Slip_SWITCH HAL_GPIO_ReadPin(INA_GPIO_Port, INA_Pin)
+
 #define LASER_ON    HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_SET)
 #define LASER_OFF   HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin, GPIO_PIN_RESET)
 #define LED_G_ON   HAL_GPIO_WritePin(GPIOF, GPIO_PIN_14, GPIO_PIN_RESET)
@@ -35,6 +37,7 @@
 #define LAUNCH_PIN 									GPIO_PIN_3
 #define DEFORM_PIN									GPIO_PIN_4
 			/*		SparePin £ºPH5			*/
+uint8_t SLIP_SWITCH(void);
 void busserCtrl(float arr, uint16_t length);
 void oledCtrl(void);
 void vcc_out_init(void);

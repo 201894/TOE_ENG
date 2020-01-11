@@ -65,8 +65,7 @@ void init_quaternion(void)
       q1 = -0.555;
       q2 = 0.83;
       q3 = -0.002;
-    }
-    
+    }   
   }
   else if (hx<0 && hy > 0) //OK
   {
@@ -101,8 +100,7 @@ void init_quaternion(void)
       q1 = -0.83;
       q2 = -0.553;
       q3 = 0.0023;
-    }
-    
+    }    
   }
   else if (hx > 0 && hy < 0)     //OK
   {
@@ -173,8 +171,7 @@ void init_quaternion(void)
       q1 = 0.002;
       q2 = -0.0167;
       q3 = 0.5557;
-    }
-    
+    }   
   }
   else if (hx > 0 && hy < 0)
   {
@@ -325,13 +322,13 @@ void Temp_keep(void){
 	TIM3->CCR2 = (uint16_t)imu_temp.ctrOut;
 }
 
-void imu_cal_update(void){
+void imu_cal_update(void)
+{
 	Temp_keep();
 	IMU_Get_Data();
 	imu_AHRS_update();
 	InfantryYawUpdate();
 }
-
 
 void imu_thread(void const *argu)
 {
