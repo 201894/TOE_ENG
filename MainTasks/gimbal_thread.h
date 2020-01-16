@@ -32,7 +32,7 @@ typedef enum
   MIN_R_ANGLE = -20,					// 卸荷 角度 
 	EVALVE_SELFLOCK_ANGLE = -110,    // 气缸自锁角度
   MID_R_ANGLE = -90,			    // 扫描 角度 垂直
-  MAX_R_ANGLE = -182,				// 夹取 角度
+  MAX_R_ANGLE = -180,				// 夹取 角度
 } flip_angle_e;
 
 typedef enum
@@ -49,14 +49,14 @@ typedef enum
 
 typedef struct
 {
-
-  float           					 PitTargrtAngle;
-  float            						YawTargrtAngle;
-  int16_t        					 fric_speed;	
+  float    pitTargrtAngle;
+  float    yawTargrtAngle;
+  int16_t    fric_speed;	
 	gimbal_mode_e   mode;
 }gimbal_t;
 
 static void gimbal_pid_handle(void);
+static void gimbal_pid_adjust(void);
 static void gimbal_mode_switch(void);
 static void gimbal_target_constrain(void);
 static void gimbal_target_handle(rc_info_t *_rc , gimbal_t *_gimbal);

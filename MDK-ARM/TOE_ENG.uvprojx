@@ -175,7 +175,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F427xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;            ../Drivers/STM32F4xx_HAL_Driver/Inc;            ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;            ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;            ../Drivers/CMSIS/Include;            ../Middlewares/Third_Party/FreeRTOS/Source/include;            ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;            ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;            ..\DeCode;            ..\RmLib;            ..\UserBsp;            ..\MainTasks</IncludePath>
+              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ../Middlewares/Third_Party/FreeRTOS/Source/include; ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS; ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F; ..\DeCode; ..\RmLib; ..\UserBsp; ..\MainTasks; ..\MyAlgorithm</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -522,6 +522,21 @@
               <FileName>imu_thread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\MainTasks\imu_thread.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/MyAlgorithm</GroupName>
+          <Files>
+            <File>
+              <FileName>fetch_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MyAlgorithm\fetch_ctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>stir_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\MyAlgorithm\stir_ctrl.c</FilePath>
             </File>
           </Files>
         </Group>

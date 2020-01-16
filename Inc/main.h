@@ -70,6 +70,12 @@ void Error_Handler(void);
 #define INB_GPIO_Port GPIOH
 #define INC_Pin GPIO_PIN_11
 #define INC_GPIO_Port GPIOH
+#define PWM_E_Pin GPIO_PIN_15
+#define PWM_E_GPIO_Port GPIOD
+#define PWM_G_Pin GPIO_PIN_13
+#define PWM_G_GPIO_Port GPIOD
+#define PWM_H_Pin GPIO_PIN_12
+#define PWM_H_GPIO_Port GPIOD
 #define OLED_RST_Pin GPIO_PIN_10
 #define OLED_RST_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */

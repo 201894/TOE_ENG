@@ -9,6 +9,7 @@
 #include "stm32f4xx_hal.h"
 #include "bsp_uart.h"
 #include "chassis_thread.h"
+#include "kernal_thread.h"
  //-----------------------------------头文件包含
  
 //-----------------------------------变量保护区（以下变量不能改变）
@@ -121,7 +122,7 @@ void multi3(int n)
 
 void multi4(int n)
 {
-   chassis.targetPosition = xx[1];	
+   kernal_ctrl.flipTargetAngle = xx[1];	
 }
 
 void multi5(int n)

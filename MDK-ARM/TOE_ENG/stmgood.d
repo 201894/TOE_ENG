@@ -45,3 +45,4 @@ toe_eng\stmgood.o: ..\DeCode\DR16_decode.h
 toe_eng\stmgood.o: ..\RmLib\RMsystem.h
 toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\stdbool.h
 toe_eng\stmgood.o: E:\Keil\ARM\ARMCC\Bin\..\include\string.h
+toe_eng\stmgood.o: ..\MainTasks\kernal_thread.h

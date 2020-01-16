@@ -18,6 +18,8 @@
 "toe_eng\gimbal_thread.o"
 "toe_eng\kernal_thread.o"
 "toe_eng\imu_thread.o"
+"toe_eng\fetch_ctrl.o"
+"toe_eng\stir_ctrl.o"
 "toe_eng\main.o"
 "toe_eng\gpio.o"
 "toe_eng\adc.o"

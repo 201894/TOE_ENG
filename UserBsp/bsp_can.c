@@ -100,13 +100,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 			{
 				data2bytes.c[0] = RxData1[0];
 				data2bytes.c[1] = RxData1[1];
-				kernal_ctrl.slipPos  =(float)data2bytes.d;				
+				kernal_ctrl.slipTargetPos  =(float)data2bytes.d;				
 				data2bytes.c[0] = RxData1[2];
 				data2bytes.c[1] = RxData1[3];
-				kernal_ctrl.flipAngle = (float)data2bytes.d;					
-//				data2bytes.c[0] = RxData1[4];
-//				data2bytes.c[1] = RxData1[5];
-//				kernal_ctrl.extraUpPos = (float)data2bytes.d;	
+				kernal_ctrl.flipTargetAngle  =(float)data2bytes.d;					
+				kernal_ctrl.upLiftSelfLockFlag = RxData1[4];					
 				g_fps[COMMU].cnt ++;	
 			}break;  
 	    case CAN_SLAVE_M2_ID: 

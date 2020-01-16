@@ -192,10 +192,11 @@ void debug_thread(void const * argument)
 		printf("upLiftPosFlag = %d\r\n",kernal_ctrl.upLiftPosFlag);
 		printf("stopFlag = %d\r\n",chassis.stopFlag);		
 		printf("TargetLiftAngle = %.2f\r\n",chassis.targetPosition);	
-		printf("	Target slipPos = %.2f\r\n",	kernal_ctrl.slipPos);	
-		printf("	Target.flipAngle = %.2f\r\n",kernal_ctrl.flipAngle);			
-			printf(".targetPosition = %.2f\r\n",chassis.targetPosition);			
-		
+		printf("CurrentAngle = %.2f\r\n",moto_gimbal[MotoLFlip].total_angle);			
+		printf("	Target slipPos = %.2f\r\n",	kernal_ctrl.slipTargetPos);	
+		printf("	Target.flipAngle = %.2f\r\n",kernal_ctrl.flipTargetAngle);			
+		printf(".targetPosition = %.2f\r\n",chassis.targetPosition);			
+		printf("SLIP_SWITCH = %d\r\n",Slip_SWITCH);			
 #endif		
 		
 #if 0
@@ -260,7 +261,7 @@ void debug_thread(void const * argument)
 
 #if 0
 			printf("# SLIP PID REVENLENT : #\r\n");				
-			printf("	kernal_ctrl.slipPos = %d\r\n",	kernal_ctrl.slipPos);	
+			printf("	kernal_ctrl.slipPos = %d\r\n",	kernal_ctrl.slipTargetPos);	
 			printf("Currentecd = %d\r\n",moto_gimbal[MotoSlip].ecd);				
 			printf("CurrentAngle = %.2f\r\n",moto_gimbal[MotoSlip].total_angle);	
 			printf("AngleError = #%.2f\r\n",pid_out[SlipECD].errNow);	
@@ -272,13 +273,14 @@ void debug_thread(void const * argument)
 
 #if 0
 			printf("# FLIP PID REVENLENT : #\r\n");				
-			printf("TargetAngle = %.2f\r\n",chassis.targetPosition);	
+			printf("MaxOut = %.2f\r\n",pid_out[FlipECD].MaxOut);				
+			printf("TargetAngle = %.2f\r\n",kernal_ctrl.flipTargetAngle);	
 			printf("Currentecd = %d\r\n",moto_gimbal[MotoLFlip].ecd);				
 			printf("CurrentAngle = %.2f\r\n",moto_gimbal[MotoLFlip].total_angle);	
-			printf("AngleError = #%.2f\r\n",pid_out[LiftECD].errNow);	
-			printf("FirstCtrOut = %.2f\r\n",pid_out[LiftECD].ctrOut);				
+			printf("AngleError = #%.2f\r\n",pid_out[FlipECD].errNow);	
+			printf("FirstCtrOut = %.2f\r\n",pid_out[FlipECD].ctrOut);				
 			printf("CurrentSpd = %.2f\r\n",moto_gimbal[MotoLFlip].speed_rpm*0.2);	 // MotoData[RightUpLift].speed_rpm
-			printf("CurrentSpdRight = %.2f\r\n",moto_gimbal[MotoLFlip]speed_rpm*0.2);	 // MotoData[RightUpLift].speed_rpm			
+			printf("CurrentSpdRight = %.2f\r\n",moto_gimbal[MotoLFlip].speed_rpm*0.2);	 // MotoData[RightUpLift].speed_rpm			
 			printf("SpdError = %.2f\r\n",pid_in[MotoLFlip].errNow);			
 			printf("FinalCtrOut = %d\r\n",(int16_t)pid_in[MotoLFlip].ctrOut);					
 			printf("RightFinalCtrOut = %d\r\n",(int16_t)pid_in[MotoRFlip].ctrOut);					

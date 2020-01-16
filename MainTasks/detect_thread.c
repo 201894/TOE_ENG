@@ -12,6 +12,7 @@
 #include "kernal_thread.h"
 #include "bsp_can.h"
 #include "cmsis_os.h"
+#include "fetch_ctrl.h"
 #include "bsp_io.h"
 #include "oled.h"
 #include "adc.h"
@@ -168,7 +169,7 @@ void detect_thread(void const *argu)
 		slove_ms_send(kernal_ctrl.fetchMode, \
 																	UPLIFT_POS_STATE, \
 																		SLIP_POS_STATE, \
-																			0, \
+																			UPLIFT_MAX_STATE, \
 																				0);
 /* HAL_IWDG_Refresh */					
 		HAL_IWDG_Refresh(&hiwdg);

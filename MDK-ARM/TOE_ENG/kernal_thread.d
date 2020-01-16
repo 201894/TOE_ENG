@@ -60,6 +60,7 @@ toe_eng\kernal_thread.o: ../Inc/gpio.h
 toe_eng\kernal_thread.o: ../Inc/tim.h
 toe_eng\kernal_thread.o: ..\RmLib\pid.h
 toe_eng\kernal_thread.o: E:\Keil\ARM\ARMCC\Bin\..\include\math.h
+toe_eng\kernal_thread.o: ..\MyAlgorithm\fetch_ctrl.h
 toe_eng\kernal_thread.o: ..\RmLib\STMGood.h
 toe_eng\kernal_thread.o: ..\RmLib\km_handle.h
 toe_eng\kernal_thread.o: ..\DeCode\DR16_decode.h

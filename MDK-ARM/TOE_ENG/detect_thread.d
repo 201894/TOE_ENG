@@ -52,6 +52,7 @@ toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/time
 toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 toe_eng\detect_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+toe_eng\detect_thread.o: ..\MyAlgorithm\fetch_ctrl.h
 toe_eng\detect_thread.o: ..\UserBsp\bsp_io.h
 toe_eng\detect_thread.o: ../Inc/gpio.h
 toe_eng\detect_thread.o: ../Inc/main.h

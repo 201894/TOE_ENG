@@ -61,3 +61,4 @@ toe_eng\gimbal_thread.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/even
 toe_eng\gimbal_thread.o: ..\RmLib\STMGood.h
 toe_eng\gimbal_thread.o: ..\RmLib\pid.h
 toe_eng\gimbal_thread.o: ..\RmLib\user_lib.h
+toe_eng\gimbal_thread.o: ..\MyAlgorithm\fetch_ctrl.h

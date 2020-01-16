@@ -37,7 +37,7 @@
 #define  CHASSIS_SPD_KI                      	  0.1f // 
 #define  CHASSIS_SPD_KD                    		0.0f // 
 /*抬升电机 PID 参数*/
-#define  LIFT_MAX_SPD                  	800 // 
+#define  LIFT_MAX_SPD                  	600 // 
 #define  LIFT_ANG_ERRORLLIM     	3000 // 
 #define  LIFT_MAX_CURRENT        		15000 // 
 #define  LIFT_SPD_ERRORLLIM       	6000 // 
