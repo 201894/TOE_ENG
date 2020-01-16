@@ -145,7 +145,7 @@ void key_fsm(kb_state_e *sta, uint8_t key)
         {
           if (km.dk_cnt++ > LONG_PRESS_TIME/KERNAL_THREAD_PERIOD)
             *sta = KEY_PRESS_LONG;
-        }		
+        }
       }
       else
         *sta = KEY_RELEASE;

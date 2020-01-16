@@ -64,13 +64,13 @@ static void get_main_ctrl_mode(void)
 					}break;		
 					case RC_UP:
 					{
-						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;								
+						kernal_ctrl.global_mode =  RC_FETCH_MODE;								
 					}break;	
 			    default:{			
 						kernal_ctrl.global_mode =  SAFETY_MODE;								
 			    }
 			    break;							
-				}												
+				}
       }break;				
       case RC_MI:
       {
@@ -78,21 +78,21 @@ static void get_main_ctrl_mode(void)
 				{
 					case RC_DN:
 					{
-						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;							
+						kernal_ctrl.global_mode =  MANUAL_CTRL_MODE;							
 					}break;		
 					case RC_MI: 
 					{
-						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;		
+						kernal_ctrl.global_mode =  BU_CLEAR_MODE;		
 					}break;	
 					case RC_UP: 
 					{
-						kernal_ctrl.global_mode =  AUTO_FETCH_MODE1;										
+						kernal_ctrl.global_mode =  BU_TEST_MODE;										
 					}break;	
 			    default:{			
 						kernal_ctrl.global_mode =  SAFETY_MODE;								
 			    }
 			    break;							
-				}					
+				}
       }break;		  		
       case RC_UP:
       {
@@ -100,16 +100,8 @@ static void get_main_ctrl_mode(void)
 				{
 					case RC_DN:
 					{
-						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;							
+						kernal_ctrl.global_mode =  KB_CTRL_MODE;							
 					}break;		
-					case RC_MI: 
-					{
-						kernal_ctrl.global_mode =  AUTO_FETCH_MODE2;		
-					}break;	
-					case RC_UP: 
-					{
-						kernal_ctrl.global_mode =  SEMI_AUTO_MODE;								
-					}break;	
 			    default:{			
 						kernal_ctrl.global_mode =  SAFETY_MODE;								
 			    }
@@ -121,7 +113,7 @@ static void get_main_ctrl_mode(void)
 
 static void global_mode_init(void)
 {
-		kernal_ctrl.fetchMode = 0;
+//		kernal_ctrl.fetchMode = 0;
 		
 }
 static void global_mode_handle(void)
@@ -134,29 +126,27 @@ static void global_mode_handle(void)
       case SAFETY_MODE:
       {
 					chassis.mode = CHASSIS_RELAX;
-
-      }break;				
+      }break;
       case MANUAL_CTRL_MODE:
       {
 					chassis.mode = MANUAL_FOLLOW_GIMBAL;
-      }break;		
-      case SEMI_AUTO_MODE:
+      }break;
+      case RC_FETCH_MODE:
       {
-					chassis.mode = MANUAL_SEPARATE_GIMBAL;					
-      }break;				
-      case AUTO_CTRL_MODE:
+					chassis.mode = CHASSIS_STOP;  //  取弹模式 				
+	//				rc_mode_ctrl(kernal_ctrl.fetchMode,rc.ch0,rc.ch1);		
+					rc_mode_ctrl(rc.ch0,rc.ch1);		
+      }break;
+      case BU_CLEAR_MODE:
       {
 					
-      }break;		
-      case AUTO_FETCH_MODE1:
+      }break;
+      case BU_TEST_MODE:
+      {				
+      }break;				
+      case KB_CTRL_MODE:
       {
-					chassis.mode = CHASSIS_STOP;  //  取弹模式 	
-					kernal_ctrl.fetchMode = 1;				
-      }break;	
-      case AUTO_FETCH_MODE2:
-      {
-					chassis.mode = CHASSIS_STOP;  //  取弹模式 					
-					kernal_ctrl.fetchMode = 2;
+					
       }break;					
 		}
 }
@@ -178,11 +168,10 @@ static void chassis_mode_handle(void)
 				if(uplift_accuracy(100.0f) == 1){
 					chassis.stopFlag  = SET; 				
 				}
-					kernal_ctrl.flipTargetAngle -= (float)(rc.ch3)*0.002;
       }break;		
       case MANUAL_SEPARATE_GIMBAL:
       {
-				chassis.targetPosition = LIFT_FETCH_ANGLE;  				
+				
       }break;		
       case MANUAL_FOLLOW_GIMBAL:
       {
@@ -213,6 +202,22 @@ static void kb_enable_hook(void)
 			km.kb_enable = 1;
 		else
 			km.kb_enable = 0;
+}
+static void rc_mode_ctrl(float _chx,float _chy)
+{
+		if(_chx >= 330){
+			kernal_ctrl.fetchMode = 2;
+		}
+		if(_chx <= -330){
+			kernal_ctrl.fetchMode = 3;	
+		}
+		if(_chy >= 330){
+			kernal_ctrl.fetchMode = 1;				
+		}
+		if(_chy <= -330){
+			kernal_ctrl.fetchMode = 0;				
+		}
+			
 }
 
 void PID_InitArgument(void)

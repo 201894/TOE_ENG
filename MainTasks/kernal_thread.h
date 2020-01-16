@@ -20,10 +20,10 @@
 typedef enum
 {
   MANUAL_CTRL_MODE = 0,
-	AUTO_FETCH_MODE1,
-	AUTO_FETCH_MODE2,	
-  SEMI_AUTO_MODE,
-  AUTO_CTRL_MODE,
+	RC_FETCH_MODE,
+	BU_CLEAR_MODE,
+	BU_TEST_MODE,	
+  KB_CTRL_MODE,
   SAFETY_MODE,
 } global_mode_e;
 
@@ -51,7 +51,7 @@ static void global_mode_handle(void);
 static void chassis_mode_handle(void);
 static void gimbal_mode_handle(void);
 static void stir_freq_ctrl(void);
-
+static void rc_mode_ctrl(float _chx,float _chy);
 void PID_InitArgument(void);
 void MODE_InitArgument(void);
 extern kernal_ctrl_t kernal_ctrl;
